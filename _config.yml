@@ -1,0 +1,12 @@
+title: "jekyll starterkit"
+description: "making it easy to start new jekyll sites."
+url: 'http://localhost:4000'
+baseurl: ''
+
+permalink: pretty
+google_analytics_id: UA-xxx-x
+server: true
+auto: true
+exclude:
+- .gitignore
+- README.md

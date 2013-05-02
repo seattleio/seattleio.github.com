@@ -1,0 +1,126 @@
+html,
+body,
+input,
+button,
+select,
+textarea {
+  font: 15px/25px "Helvetica Neue", Helvetica, arial, sans-serif;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 300;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+
+pre {
+  margin: 0px 0px 20px 0px;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+p {
+  margin: 10px 0px;
+}
+
+a {
+  color: #436C93;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #163B60;
+}
+
+nav#main-menu ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+nav#main-menu ul li {
+  
+}
+
+header nav#main-menu {
+  padding-top: 27px;
+}
+
+header nav#main-menu {
+  float: right;
+}
+
+header nav#main-menu ul li {
+  display: inline-block;
+  text-align: right;
+  margin-left: 20px;
+}
+
+main nav#main-menu ul li {
+  display: block;
+}
+
+.container {
+  width: 100%;
+  margin: 0px auto;
+}
+
+.inner-wrapper {
+  width: 80%;
+  padding: 0px 10% 0px 10%;
+  margin: 0px auto;
+}
+
+header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #efefef;
+  margin-bottom: 15px;
+}
+
+h1.site-title {
+  font-size: 20px;
+  float: left;
+}
+
+footer {
+  
+}
+
+@media only screen and (min-width: 500px) {
+  .container {
+    width: 480px;
+  }
+
+  .inner-wrapper {
+    padding: 0px;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .container {
+    width: 800px;
+  }
+}
+
+/* clearfix */
+.container:before,
+.container:after {
+  content: " ";
+  display: table;
+}
+
+.container:after {
+  clear: both;
+}
+
+.container {
+  *zoom: 1;
+}

@@ -1,0 +1,7 @@
+{% if page.custom.css %}
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/post-assets/{{ page.slug }}/style.css">
+{% endif %}
+
+{% if post.custom.css %}
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/post-assets/{{ post.slug }}/style.css">
+{% endif %}

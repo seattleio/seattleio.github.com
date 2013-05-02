@@ -1,0 +1,11 @@
+---
+layout: default
+pizza: "pizza is fucking awesome!"
+sidebar: true
+---
+
+{% for post in site.posts %}
+  <a href="{{ post.url }}" class="{{ post.slug }}">
+    <h3>{{ post.title }}</h3>
+  </a>
+{% endfor %}

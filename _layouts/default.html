@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
+<head>
+  <title>{{ site.title }}</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="{{ site.description }}">
+  <meta name="viewport" content="width=device-width">
+
+  <link href="{{ site.baseurl }}/components/normalize-css/normalize.css" rel="stylesheet" />
+  <link href="{{ site.baseurl }}/style.css" rel="stylesheet" />
+  {% include custom_css.html %}
+  <script src="{{ site.baseurl }}/components/modernizr/modernizr.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="inner-wrapper">
+      <h1 class="site-title"><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+      {% include main_menu.html %}
+    </div>
+  </div>
+</header>
+
+<main role="main">
+  <div class="container">
+    <div class="inner-wrapper">
+      {% include sidebar.html %}
+      {{ content }}
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="inner-wrapper">
+    </div>
+  </div>
+</footer>
+
+<script src="{{ site.baseurl }}/components/jquery/jquery.min.js"></script>
+<script src="{{ site.baseurl }}/components/lunr.js/lunr.min.js"></script>
+<script src="{{ site.baseurl }}/app.js"></script>
+{% include custom_js.html %}
+<!-- {% include google_analytics.html %} -->
+</body>
+</html>

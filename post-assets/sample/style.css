@@ -1,0 +1,16 @@
+body { 
+  color: #fff;
+  background-color: #c3e451;
+}
+
+body, html {
+  height: 100%;
+}
+
+header {
+  border-bottom: 1px solid #EAF5C2;
+}
+
+a {
+  color: #fff;
+}
