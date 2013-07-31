@@ -36,9 +36,10 @@ h1#site-title {
 .banner {
   width: 100%;
   background-image: url('img/photo.jpg');
+  background-size: 120%;
+  background-repeat: no-repeat;
   width: 100%;
   height: 10%;
-  background-size: 100%;
   padding-top: 5%;
   padding-left: 1%;
   padding-right: 1%;
