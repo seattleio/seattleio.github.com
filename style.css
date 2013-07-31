@@ -35,16 +35,20 @@ h1#site-title {
 
 .banner {
   width: 100%;
-  height: 300px;
   background-image: url('img/photo.jpg');
-  background-size: 100% auto;
-  padding-top: 40px;
+  width: 100%;
+  height: 10%;
+  background-size: 100%;
+  padding-top: 5%;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 5%;
 }
 
 .welcome {
   width: 80%;
   background: rgba(0, 0, 0, 0.8);
-  padding: 40px;
+  padding: 40px 40px 20px 40px;
   margin: 0px auto;
   color: #fff;
 }
@@ -53,4 +57,16 @@ h1#site-title {
   margin-top: 0px;
   font-weight: 100;
   text-align: center;
+  font-size: 20px;
+}
+
+@media only screen and (min-width: 500px) {
+  .banner {
+    padding-top: 8%;
+    padding-bottom: 8%;
+  }
+
+  .welcome h2 {
+    font-size: 30px;
+  }
 }
