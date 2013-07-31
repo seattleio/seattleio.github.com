@@ -58,6 +58,3 @@ function posts(res){
   });
 }
 ```
-
-## search
-A search index is generated in search.json each time you run the jekyll server or run ```rake jekyll:search```
