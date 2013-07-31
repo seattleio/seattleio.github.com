@@ -1,126 +1,56 @@
-html,
-body,
-input,
-button,
-select,
-textarea {
-  font: 15px/25px "Helvetica Neue", Helvetica, arial, sans-serif;
-  color: #333;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 300;
-  margin-top: 25px;
-  margin-bottom: 5px;
-}
-
-pre {
-  margin: 0px 0px 20px 0px;
-  font-size: 16px;
-  line-height: 28px;
-}
-
-p {
-  margin: 10px 0px;
+* {
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 a {
-  color: #436C93;
-  text-decoration: none;
+
 }
 
-a:hover, a:focus {
-  color: #163B60;
+a:hover {
+
 }
 
-nav#main-menu ul {
-  padding: 0px;
-  margin: 0px;
-}
+a:active {
 
-nav#main-menu ul li {
-  
-}
-
-header nav#main-menu {
-  padding-top: 27px;
-}
-
-header nav#main-menu {
-  float: right;
-}
-
-header nav#main-menu ul li {
-  display: inline-block;
-  text-align: right;
-  margin-left: 20px;
-}
-
-main nav#main-menu ul li {
-  display: block;
 }
 
 .container {
-  width: 100%;
-  margin: 0px auto;
-}
-
-.inner-wrapper {
-  width: 80%;
-  padding: 0px 10% 0px 10%;
+  width: 80%; 
   margin: 0px auto;
 }
 
 header {
-  padding-bottom: 15px;
-  border-bottom: 1px solid #efefef;
-  margin-bottom: 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #ededed;
+  -webkit-box-shadow: inset 0px -2px 8px 0px rgba(200, 200, 200, 0.3);
+  box-shadow: inset 0px -2px 8px 0px rgba(200, 200, 200, 0.3);
 }
 
-h1.site-title {
-  font-size: 20px;
-  float: left;
+h1#site-title {
+  font-weight: 100;
+  font-size: 1.8em;
+  text-align: center;
+  margin: 35px 0px 30px 0px;
 }
 
-footer {
-  
+.banner {
+  width: 100%;
+  height: 300px;
+  background-image: url('img/photo.jpg');
+  background-size: 100% auto;
+  padding-top: 40px;
 }
 
-@media only screen and (min-width: 500px) {
-  .container {
-    width: 480px;
-  }
-
-  .inner-wrapper {
-    padding: 0px;
-    width: 100%;
-  }
+.welcome {
+  width: 80%;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  margin: 0px auto;
+  color: #fff;
 }
 
-@media only screen and (min-width: 960px) {
-  .container {
-    width: 800px;
-  }
-}
-
-/* clearfix */
-.container:before,
-.container:after {
-  content: " ";
-  display: table;
-}
-
-.container:after {
-  clear: both;
-}
-
-.container {
-  *zoom: 1;
+.welcome h2 {
+  margin-top: 0px;
+  font-weight: 100;
+  text-align: center;
 }

@@ -1,10 +1,9 @@
 {
-  "name": "jekyll-starterkit",
+  "name": "seattleio",
   "version": "0.0.0",
   "dependencies": {
     "jquery": "~1.9.1",
-    "normalize-css": "~2.1.1",
-    "modernizr": "~2.6.2",
-    "lunr.js": "~0.3.0"
+    "html5shiv": "~3.6.2",
+    "bootstrap": "3.0.0-rc1"
   }
 }

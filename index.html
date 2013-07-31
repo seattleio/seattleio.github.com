@@ -1,11 +1,20 @@
 ---
 layout: default
 pizza: "pizza is fucking awesome!"
-sidebar: true
 ---
 
-{% for post in site.posts %}
-  <a href="{{ post.url }}" class="{{ post.slug }}">
-    <h3>{{ post.title }}</h3>
-  </a>
-{% endfor %}
+<div class="banner">
+  <div class="welcome">
+    <h2>Learn about indie video games in Seattle, WA</h2>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-lg-12">
+    {% for post in site.posts %}
+      <a href="{{ post.url }}" class="{{ post.slug }}">
+        <h3>{{ post.title }}</h3>
+      </a>
+    {% endfor %}
+  </div>
+</div>

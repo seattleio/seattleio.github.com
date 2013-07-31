@@ -3,38 +3,10 @@ posts({
     
     {
       "id": 1,
-      "title": "On an airplane",
-      "tags": [ null],
-      "href": "/2013/05/01/airplane/",
-      "content": "%3Cp%3EI+am+on+an+airplane.%3C%2Fp%3E",
-      "teaser": "&lt;p&gt;I am on an airplane.&lt;/p&gt;",
-      "date": {
-        "day": "01",
-        "month": "May",
-        "year": "2013"
-      }
-    },
-    
-    {
-      "id": 2,
-      "title": "About",
-      "tags": [ null],
-      "href": "/2013/05/01/about/",
-      "content": "%3Cp%3Eabout+the+jekyll+starterkit.%3C%2Fp%3E",
-      "teaser": "&lt;p&gt;about the jekyll starterkit.&lt;/p&gt;",
-      "date": {
-        "day": "01",
-        "month": "May",
-        "year": "2013"
-      }
-    },
-    
-    {
-      "id": 3,
       "title": "Sample post",
       "tags": [ null],
       "href": "/2013/04/12/test/",
-      "content": "%3Cp%3EThis+is+a+sample+post.%3Cbr+%2F%3EYou+can+include+custom+css+and+js+files+by+adding+the+following+to+the+yaml+front+matter+of+a+post%3A+%3Cpre%3Ecustom%3A++++css%3A+true++++js%3A+true%3C%2Fpre%3E%3C%2Fp%3E%3Cp%3EThere+is+a+custom+css+file+at+%2Fpost-assets%2F%7B%7B+post.slug+%7D%7D%2Fstyle.css%3C%2Fp%3E%3Cdiv+class%3D%27demo%27+%2F%3E",
+      "content": "%3Cp%3EThis+is+a+sample+post.%3Cbr+%2F%3EYou+can+include+custom+css+and+js+files+by+adding+the+following+to+the+yaml+front+matter+of+a+post%3A+%3Cpre%3Ecustom%3A++++css%3A+true++++js%3A+true%3C%2Fpre%3E%3C%2Fp%3E%3Cp%3EThere+is+a+custom+css+file+at+%2Fpost-assets%2F%7B%7B+post.slug+%7D%7D%2Fstyle.css%3C%2Fp%3E",
       "teaser": "&lt;p&gt;This is a sample post.&lt;br /&gt;You can include custom css and js files by adding the following to the yaml...",
       "date": {
         "day": "12",
