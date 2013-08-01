@@ -20,14 +20,16 @@ a:active {
 }
 
 .sidebar {
-  padding-top: 30px;
+  margin-top: 30px;
+  padding: 30px 20px;
+  background-color: #efefec;
 }
 
 header {
   background-color: #fff;
   border-bottom: 1px solid #ededed;
-  -webkit-box-shadow: inset 0px -2px 8px 0px rgba(200, 200, 200, 0.3);
-  box-shadow: inset 0px -2px 8px 0px rgba(200, 200, 200, 0.3);
+  -webkit-box-shadow: inset 0px -2px 5px 0px rgba(200, 200, 200, 0.3);
+  box-shadow: inset 0px -2px 5px 0px rgba(200, 200, 200, 0.3);
 }
 
 h1#site-title {
@@ -48,6 +50,8 @@ h1#site-title {
   padding-left: 1%;
   padding-right: 1%;
   padding-bottom: 5%;
+  -webkit-box-shadow: inset 0px -2px 5px 0px rgba(200, 200, 200, 0.3);
+  box-shadow: inset 0px -2px 5px 0px rgba(200, 200, 200, 0.3);
 }
 
 .welcome {
@@ -73,6 +77,33 @@ h1#site-title {
 .description p {
   font-size: 20px;
   font-weight: 100;
+}
+
+.newsletter {
+  text-align: center;
+}
+
+.newsletter h2 {
+  font-weight: 100;
+  margin-bottom: 30px;
+}
+
+.mc-field-group label {
+  font-weight: 300;
+}
+
+input.email {
+  border: 1px solid #ccc;
+  display: inline-block;
+  outline: none;
+  width: 150px;
+  padding: 8px;
+  vertical-align: top;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+
+input.button {
 }
 
 #recent-posts h1 {
