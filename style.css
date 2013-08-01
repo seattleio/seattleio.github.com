@@ -79,6 +79,16 @@ h1#site-title {
   font-weight: 100;
 }
 
+#pre-order {
+  margin-top: 50px;
+}
+
+#pre-order h1 {
+  border: none;
+  color: #FF46AF;
+  line-height: 1.5;
+}
+
 .newsletter {
   text-align: center;
 }
@@ -103,7 +113,10 @@ input.email {
   font-weight: 300;
 }
 
-input.button {
+input.btn {
+  background-color: #A4CD2C;
+  color: #fefefa;
+  border-radius: 2px;
 }
 
 section h1 {
