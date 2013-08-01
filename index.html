@@ -10,11 +10,22 @@ pizza: "pizza is fucking awesome!"
 </div>
 
 <div class="container">
-  <div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12 description">
+      <p>seattle.io produces books about local topics.</p> 
+      <p>Book #1 is all about <b>local indie game developers!</b></p>
+    </div>
+  <section id="recent-posts" class="col-lg-8">
+    <h1>Recent posts:</h1>
     {% for post in site.posts %}
       <a href="{{ post.url }}" class="{{ post.slug }}">
         <h3>{{ post.title }}</h3>
       </a>
     {% endfor %}
+  </section>
+
+  <div class="col-lg-4 sidebar">
+    
   </div>
+</div>
 </div>

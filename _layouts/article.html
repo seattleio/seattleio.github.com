@@ -1,7 +1,10 @@
 ---
 layout: default
 ---
-<div class="col-lg-8">
-  <h2>{{ page.title }}</h2>
-  {{ content }}
+<div class="container">
+  <div class="col-lg-8">
+    <h2>{{ page.title }}</h2>
+    {{ content }}
+  </div>
+  {% include sidebar.html %}
 </div>
