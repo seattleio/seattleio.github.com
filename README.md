@@ -50,9 +50,9 @@ $.ajax({
   dataType: 'jsonp',
 }).done( posts );
 
-function posts(res){
-  res.posts.pop(res.posts.length);
-  var posts = res.posts;
+function posts(results){
+  results.posts.pop(results.posts.length);
+  var posts = results.posts;
   posts.forEach(function(post, id){
     console.log(id, post);
   });

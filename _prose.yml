@@ -1,5 +1,4 @@
 prose:
-  rooturl: "_posts"
   metadata: 
     _posts/articles: |
       published: false
@@ -10,3 +9,5 @@ prose:
       author: Seth Vincent
       categories:
       - articles
+      - games
+      - about
