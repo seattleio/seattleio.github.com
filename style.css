@@ -21,7 +21,7 @@ a:active {
 
 .sidebar {
   margin-top: 30px;
-  padding: 30px 20px;
+  padding: 5px 20px;
   background-color: #efefec;
 }
 
@@ -147,6 +147,14 @@ h3.post-title {
 #tumblr a, 
 h3.post-title a {
   color: #757572;
+}
+
+.sidebar h5 {
+  text-align: center;
+  margin-top: 30px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 10px;
 }
 
 @media only screen and (min-width: 500px) {
