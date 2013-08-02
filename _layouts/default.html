@@ -11,10 +11,13 @@
   <meta name="description" content="{{ site.description }}">
   <meta name="viewport" content="width=device-width">
 
-  <link href='http://fonts.googleapis.com/css?family=Roboto:100,300,500,900,900italic,500italic,300italic,100italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:100,300,500,900,900italic,500italic,300italic,100italic' rel='stylesheet' />
   <link href="{{ site.baseurl }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="{{ site.baseurl }}/style.css" rel="stylesheet" />
+
   {% include custom_css.html %}
+
+
   <script src="{{ site.baseurl }}/bower_components/html5shiv/dist/html5shiv.js"></script>
 </head>
 <body>
@@ -38,7 +41,11 @@
   </div>
 </footer>
 
+<script id="post">
+</script>
+
 <script src="{{ site.baseurl }}/bower_components/jquery/jquery.min.js"></script>
+<script src="{{ site.baseurl }}/bower_components/mustache/mustache.js"></script>
 <script src="{{ site.baseurl }}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="{{ site.baseurl }}/app.js"></script>
 {% include custom_js.html %}

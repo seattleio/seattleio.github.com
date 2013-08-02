@@ -137,6 +137,18 @@ section h1 {
   margin-bottom: 25px;
 }
 
+h3.post-title {
+  font-weight: 300;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #efefe2;
+  margin-bottom: 30px;
+}
+
+#tumblr a, 
+h3.post-title a {
+  color: #757572;
+}
+
 @media only screen and (min-width: 500px) {
   .banner {
     padding-top: 8%;
