@@ -188,7 +188,9 @@ h3.post-title a {
 }
 
 #interwebs #find li {
-  margin-bottom: 20px;
+  margin-bottom: 3px;
+  width: 100%;
+  display: block;
 }
 
 #interwebs #find li a {
@@ -197,11 +199,13 @@ h3.post-title a {
   font-size: 30px;
   color: #fff;
   font-weight: 100;
+  display: block;
 }
 
 #interwebs ul#like {
-  padding-left: 30px;
+  padding-top: 20px;
 }
+
 #interwebs ul#like li {
   width: 120px;
 }
@@ -218,5 +222,14 @@ h3.post-title a {
 
   #pre-order h1 {
     font-size: 35px;
+  }
+
+  #interwebs ul#like {
+    padding-left: 30px;
+  }
+
+  #interwebs #find li {
+    width: auto;
+    display: inline-block;
   }
 }
