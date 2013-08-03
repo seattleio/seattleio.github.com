@@ -1,5 +1,6 @@
 * {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 300;
 }
 
 a {
@@ -12,6 +13,11 @@ a:hover {
 
 a:active {
 
+}
+
+small {
+  font-weight: 300;
+  color: #999;
 }
 
 .container {
@@ -152,7 +158,7 @@ h3.post-title a {
 .sidebar h5 {
   text-align: center;
   margin-top: 30px;
-  padding-bottom: 5px;
+  padding-bottom: 7px;
   border-bottom: 1px solid #fff;
   margin-bottom: 10px;
 }
