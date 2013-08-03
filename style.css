@@ -163,6 +163,49 @@ h3.post-title a {
   margin-bottom: 10px;
 }
 
+#interwebs {
+  margin-bottom: 50px;
+}
+
+#interwebs h5 {
+  text-align: center;
+  font-weight: 100;
+  font-size: 35px;
+  text-transform: lowercase;
+  color: #A4CD2C;
+  margin-bottom: 20px;
+}
+
+#interwebs ul {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  font-weight: 100;
+}
+
+#interwebs li {
+  display: inline-block;
+}
+
+#interwebs #find li {
+  margin-bottom: 20px;
+}
+
+#interwebs #find li a {
+  background-color: #CC2C45;
+  padding: 10px 20px;
+  font-size: 30px;
+  color: #fff;
+  font-weight: 100;
+}
+
+#interwebs ul#like {
+  padding-left: 30px;
+}
+#interwebs ul#like li {
+  width: 120px;
+}
+
 @media only screen and (min-width: 500px) {
   .banner {
     padding-top: 8%;
