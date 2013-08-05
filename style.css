@@ -81,8 +81,13 @@ h1#site-title {
 }
 
 .description p {
-  font-size: 20px;
+  font-size: 1.5em;
   font-weight: 100;
+}
+
+.description p.message {
+  color: #969693;
+  font-size: 1.1em;
 }
 
 #pre-order {
