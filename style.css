@@ -81,13 +81,13 @@ h1#site-title {
 }
 
 .description p {
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: 100;
 }
 
 .description p.message {
   color: #969693;
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 #pre-order {
@@ -223,6 +223,14 @@ h3.post-title a {
 
   .welcome h2 {
     font-size: 30px;
+  }
+
+  .description p {
+    font-size: 1.8em;
+  }
+
+  .description p.message {
+    font-size: 1.4em;
   }
 
   #pre-order h1 {
