@@ -4,17 +4,6 @@ var postsEl = $('#tumblr');
 
 get('posts', postsIndex);
 
-function get(resource, callback){
-  $.ajax({
-    type: 'get',
-    url: 'http://api.tumblr.com/v2/blog/seattleio.tumblr.com/' + resource,
-    dataType: 'jsonp',
-    data: {
-      api_key: 'GucczLgzlxYpKSfLcg79KqzbyYQA3QtubHJ9jYqh89r6IptwIt'
-    },
-    success: callback
-  });
-}
 
 function blogInfo(data){
   console.log(data.response.blog)
@@ -24,9 +13,16 @@ function postsIndex(data){
   var posts = data.response.posts;
   var post = '';
 
+  console.log(posts)
+
   for (var i = 0; i < 5 && i < posts.length; i++){
 
-    post = $('<div class="post"></div>').html('<a href="' + posts[i].post_url + '" target="_blank">');
+    var post_date = moment(posts[i].date, 'YYYY-MM-DD HH:mm:ss Z');
+
+    var post_html = '<a href="' + posts[i].post_url + '" target="_blank">';
+    post_html += '<p class="post-date">' + post_date.format("MMMM Do YYYY, h:mm a") + '</p>';
+
+    post = $('<div class="post"></div>').html(post_html);
 
     if (posts[i].title === undefined){
       if (posts[i].caption.length > 200) {
@@ -41,4 +37,17 @@ function postsIndex(data){
     
     $(postsEl).append(post);
   }
+}
+
+function get(resource, callback){
+  $.ajax({
+    type: 'get',
+    url: 'http://api.tumblr.com/v2/blog/seattleio.tumblr.com/' + resource,
+    dataType: 'jsonp',
+    data: {
+      tag: 'featured',
+      api_key: 'GucczLgzlxYpKSfLcg79KqzbyYQA3QtubHJ9jYqh89r6IptwIt'
+    },
+    success: callback
+  });
 }

@@ -5,6 +5,6 @@
     "jquery": "~1.9.1",
     "html5shiv": "~3.6.2",
     "bootstrap": "3.0.0-rc1",
-    "mustache": "~0.7.2"
+    "moment": "~2.1.0"
   }
 }

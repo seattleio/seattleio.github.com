@@ -148,16 +148,28 @@ section h1 {
   margin-bottom: 25px;
 }
 
+#tumblr a {
+  color: #757572;
+  text-decoration: none;
+}
+
+#tumblr a:hover {
+  color: #353532;
+  text-decoration: none;
+}
+
+p.post-date {
+  margin-bottom: 0px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
 h3.post-title {
   font-weight: 300;
+  margin-top: 10px;
   padding-bottom: 30px;
   border-bottom: 1px solid #efefe2;
   margin-bottom: 30px;
-}
-
-#tumblr a, 
-h3.post-title a {
-  color: #757572;
 }
 
 .sidebar h5 {
@@ -223,6 +235,12 @@ h3.post-title a {
 #interwebs ul#follow li {
   width: 120px;
   vertical-align: middle;
+}
+
+footer {
+  margin-top: 30px;
+  border-top: 1px solid #efefec;
+  padding: 20px 0px;
 }
 
 @media only screen and (min-width: 500px) {
