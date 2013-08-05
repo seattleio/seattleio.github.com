@@ -172,6 +172,21 @@ h3.post-title {
   margin-bottom: 30px;
 }
 
+a.readmore {
+  background-color: #CC2C45;
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 100;
+  display: block;
+  margin: 15px auto;
+  width: 280px;
+}
+
+a.readmore:hover {
+  background-color: #454545;
+}
+
 .sidebar h5 {
   text-align: center;
   margin-top: 30px;
@@ -219,6 +234,10 @@ h3.post-title {
   display: block;
 }
 
+#interwebs #find li a:hover {
+  background-color: #454545;
+}
+
 #interwebs ul#like {
   padding-top: 20px;
 }
@@ -241,6 +260,15 @@ footer {
   margin-top: 30px;
   border-top: 1px solid #efefec;
   padding: 20px 0px;
+}
+
+footer ul {
+  text-align: center;
+}
+
+footer ul li {
+  display: inline-block;
+  padding: 10px 15px;
 }
 
 @media only screen and (min-width: 500px) {
