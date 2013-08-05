@@ -212,7 +212,17 @@ h3.post-title a {
 }
 
 #interwebs ul#like li {
+  width: 80px;
+  vertical-align: middle;
+}
+
+#interwebs ul#follow {
+  margin-top: 10px;
+}
+
+#interwebs ul#follow li {
   width: 120px;
+  vertical-align: middle;
 }
 
 @media only screen and (min-width: 500px) {
@@ -237,8 +247,8 @@ h3.post-title a {
     font-size: 35px;
   }
 
-  #interwebs ul#like {
-    padding-left: 30px;
+  #interwebs ul#like li {
+    width: 90px;
   }
 
   #interwebs #find li {
