@@ -4,7 +4,7 @@ url: 'http://localhost:4000'
 baseurl: ''
 
 permalink: pretty
-google_analytics_id: UA-xxx-x
+google_analytics_id: UA-43023400-1
 server: true
 auto: true
 exclude:
