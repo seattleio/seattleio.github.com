@@ -13,8 +13,6 @@ function postsIndex(data){
   var posts = data.response.posts;
   var post = '';
 
-  console.log(posts)
-
   for (var i = 0; i < 5 && i < posts.length; i++){
 
     var post_date = moment(posts[i].date, 'YYYY-MM-DD HH:mm:ss Z');

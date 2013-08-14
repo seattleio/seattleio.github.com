@@ -148,12 +148,16 @@ section h1 {
   margin-bottom: 25px;
 }
 
-#tumblr a {
+#recent-posts {
+  text-align: center;
+}
+
+#recent-posts .posts a {
   color: #757572;
   text-decoration: none;
 }
 
-#tumblr a:hover {
+#recent-posts .posts a:hover {
   color: #353532;
   text-decoration: none;
 }
@@ -162,6 +166,7 @@ p.post-date {
   margin-bottom: 0px;
   font-size: 0.8em;
   text-transform: uppercase;
+  text-align: left;
 }
 
 h3.post-title {
@@ -170,6 +175,7 @@ h3.post-title {
   padding-bottom: 30px;
   border-bottom: 1px solid #efefe2;
   margin-bottom: 30px;
+  text-align: left;
 }
 
 a.readmore {
@@ -178,9 +184,8 @@ a.readmore {
   font-size: 18px;
   color: #fff;
   font-weight: 100;
-  display: block;
+  display: inline-block;
   margin: 15px auto;
-  width: 280px;
 }
 
 a.readmore:hover {
@@ -254,6 +259,22 @@ a.readmore:hover {
 #interwebs ul#follow li {
   width: 120px;
   vertical-align: middle;
+}
+
+#post {
+  padding-top: 30px;
+}
+
+#post h2 {
+  font-weight: 300;
+}
+
+#post .post-date {
+  margin-bottom: 10px;
+}
+
+#post .post-content p {
+  font-size: 16px;
 }
 
 footer {

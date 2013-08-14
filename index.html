@@ -92,8 +92,17 @@ pizza: "pizza is fucking awesome!"
     <div class="row">
       <section id="recent-posts" class="col-lg-8">
         <h1>Recent posts:</h1>
-        <div id="tumblr"></div>
-        <a class="btn readmore" href="http://seattleio.tumblr.com" target="_blank">there's a lot more on our blog.</a>
+        <div class="posts">
+          {% for post in site.posts %}
+            {% if post.published %}
+              <a href="{{ post.url }}" class="{{ post.slug }}">
+                <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
+                <h3 class="post-title">{{ post.title }}</h3>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <a class="btn readmore" href="http://seattleio.tumblr.com" target="_blank">there's more on our tumblr blog.</a>
       </section>
       <div class="col-lg-4 sidebar">
         <h5>About seattle.io:</h5>
