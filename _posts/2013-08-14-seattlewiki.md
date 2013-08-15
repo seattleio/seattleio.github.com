@@ -8,7 +8,7 @@ author: Seth Vincent
 ---
 
 Journalists gather huge amounts of information. So much information has traditionally fallen into unused notebooks. Words stay stuck on voice recorder tapes and audio files. A whole backlog of source information never makes it to the public.
-  
+
 But there's no reason to hold back basic, contextual information about a topic, and one of the goals of seattle.io is to share what we learn, as we learn it – in an open and accessible way. 
 
 [SeattleWiki](http://seattlewiki.net) is our open reporter's notebook. This project is similar to the concept of an [open science notebook](http://en.wikipedia.org/wiki/Open_notebook_science), except we're applying it to journalism.
