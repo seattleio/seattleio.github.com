@@ -190,6 +190,7 @@ a.readmore {
 
 a.readmore:hover {
   background-color: #454545;
+  color: #fff;
 }
 
 .sidebar h5 {
