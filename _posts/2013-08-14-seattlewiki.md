@@ -23,7 +23,7 @@ SeattleWiki isn't just ours to edit.
 
 The wiki is maintained by [Code for Seattle](http://codeforseattle.org) (which I am also involved in as an organizer). The goal of SeattleWiki is for residents of Seattle to use it as a resource to find and share hyperlocal information. The content, with a Creative Commons license, can then be used by any organization creating apps around local information.
 
-Any news organization can use SeattleWiki as their open reporter's notebook. Any locally-focused programmers can help populate content and use it in their apps via the wiki's awesome API.
+Any news organization can use SeattleWiki as their open reporter's notebook. Any locally-focused programmers can help populate content and use it in their apps via the wiki's awesome API. SeattleWiki is an instance of [LocalWiki](http://localwiki.org), excellent wiki software designed for documenting a city.
 
 Cities need a collaborative resource for maintaining local knowledge. The more organizations that use SeattleWiki as a knowledge base for their work, the more everyone benefits.
 
