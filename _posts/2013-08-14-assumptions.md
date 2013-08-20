@@ -9,10 +9,10 @@ author: Seth Vincent
 
 seattle.io has a somewhat different approach to publishing than traditional media. 
 
-Outlined here are assumptions about publishing that we will put to the test throughout the development of seattle.io, and refine into guiding principles for a sustainable business model for publishing across diverse platforms.
+Outlined here are assumptions about publishing that we will put to the test throughout the development of seattle.io. We'll refine these assumptions into guiding principles for a sustainable business model for publishing across diverse platforms.
 
 ### Let the news of the day be free. It already is.
-Focus free content on events. Focus sellable content on narrative about people, places, things.
+Focus free content on events. Focus purchasable content on narrative about people, places, things.
 
 Charge for comprehensive content that people need for research. Use free content to drive interest and document the events of the day.
 
@@ -28,12 +28,13 @@ Make ebooks, films, and apps.
 Make weird things that don’t make sense. People will probably like that – it’ll certainly be more interesting than a nasty paywall.
 
 Bundle the products you create with related goods and services. 
-Example: make an ebook about local indie game developers and bundle locally-made games with the book.
+
+Example: [make an ebook about local indie game developers and bundle locally-made games with the book](http://seattle.io).
 
 ### Practice "lean" publishing.
 Test content by making early versions available for free. Evaluate response, create more meaningful, in-depth, paid versions based on response.
 
-This is lean publishing. This is what Leanpub encourages. Technical book publishers like O’Reilly, Manning, and Apress do this when they release “early access” versions of a book.
+This is lean publishing. This is what [Leanpub](http://leanpub.com) encourages. Technical book publishers like O’Reilly, Manning, and Apress do this when they release “early access” versions of a book.
 
 Start by testing ideas via social media. 
 
@@ -52,7 +53,7 @@ Advertising only makes serious money when traffic is big, but making a decent nu
 
 ### Produce and sponsor the development of open-source software, & create products and services around technology.
 
-Support those in your community that build open-source software through donation and employment. Contribute via [GitTip](https://www.gittip.com/), hire open-source developers as contractors and include work on relevant open-source code as part of the contract.
+Support those in your community that build open-source software through donation and employment. Contribute via [GitTip](https://www.gittip.com/). Hire open-source developers as contractors and include work on relevant open-source code as part of the contract.
 
 Create open-source software that supports your business and contributes to the existing options available for publishers.
 
