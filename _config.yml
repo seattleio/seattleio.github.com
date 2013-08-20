@@ -5,8 +5,6 @@ baseurl: ''
 
 permalink: pretty
 google_analytics_id: UA-43023400-1
-server: true
-auto: true
 exclude:
 - .gitignore
 - README.md

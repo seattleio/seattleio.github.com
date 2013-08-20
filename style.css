@@ -213,14 +213,16 @@ a.readmore:hover {
   margin-bottom: 20px;
 }
 
-#interwebs ul {
+#interwebs ul,
+ul#like {
   text-align: center;
   padding: 0;
   margin: 0;
   font-weight: 100;
 }
 
-#interwebs li {
+#interwebs li,
+#like li {
   display: inline-block;
 }
 
@@ -243,11 +245,11 @@ a.readmore:hover {
   background-color: #454545;
 }
 
-#interwebs ul#like {
+ul#like {
   padding-top: 20px;
 }
 
-#interwebs ul#like li {
+ul#like li {
   width: 80px;
   vertical-align: middle;
 }

@@ -37,7 +37,11 @@
   <div class="container">
     <div class="col-lg-12">
       <ul>
+        {% if page.front %}
         <li><a href="#">top</a></li>
+        {% else %}
+        <li><a href="{{ site.baseurl }}">home</a></li>
+        {% endif %}
         <li><a href="http://seattleio.tumblr.com" id="interwebs-tumblr" target="_blank">tumblr</a></li>
         <li><a href="http://twitter.com/seattleio" id="interwebs-twitter" target="_blank">twitter</a></li>
         <li><a href="http://eepurl.com/Da5HH" id="interwebs-mailchimp" target="_blank">newsletter</a></li>
