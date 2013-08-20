@@ -5,6 +5,7 @@ layout: article
 sidebar: true
 published: true
 author: Seth Vincent
+description: "Outlined here are assumptions about publishing that we will put to the test throughout the development of seattle.io. We'll refine these assumptions into guiding principles for a sustainable business model for publishing across diverse platforms."
 ---
 
 seattle.io has a somewhat different approach to publishing than traditional media. 
