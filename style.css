@@ -139,6 +139,13 @@ input.btn {
   background-color: #A4CD2C;
   color: #fefefa;
   border-radius: 2px;
+  height: 38px;
+}
+
+input.btn:hover,
+input.btn:focus {
+  background-color: #454545;
+  color: #fff;
 }
 
 section h1 {
