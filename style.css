@@ -171,7 +171,7 @@ section h1 {
 }
 
 p.post-date {
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   font-size: 0.8em;
   text-transform: uppercase;
   text-align: left;
@@ -280,12 +280,9 @@ ul#like li {
   font-weight: 300;
 }
 
-#post .post-date {
-  margin-bottom: 10px;
-}
-
 #post .post-content p {
   font-size: 16px;
+  margin-bottom: 20px;
 }
 
 footer {
