@@ -65,3 +65,6 @@ Teach a diverse group how to code and use software development tools. Teach them
 
 These people will be the next reporters, editors, designers, developers. Get them involved in your organization. Train them. Give them a platform.
 
+<br>
+
+_[Seth Vincent](http://sethvincent.com) is a writer, designer, and developer in Seattle, WA. He works on [crtrdg.js](http://crtrdg.github.io), [Code For Seattle](http://codeforseattle.org), [SeattleWiki](http://seattlewiki.net), and [writes books about programming, technology, & media](http://superbigtree.com/books)._

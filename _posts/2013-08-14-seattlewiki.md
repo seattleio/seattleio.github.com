@@ -33,4 +33,4 @@ Here on seattle.io we'll post feature articles and excerpts from interviews and 
 
 <br>
 
-_[Seth Vincent](http://sethvincent.com) is a writer, designer, and developer in Seattle, WA. He works on [crtrdg.js](http://crtrdg.github.io), [Code For Seattle](http://codeforseattle.org), [SeattleWiki](http://seattlewiki.net), and a book about javascript called [Learn.js](http://learnjs.io)._
+_[Seth Vincent](http://sethvincent.com) is a writer, designer, and developer in Seattle, WA. He works on [crtrdg.js](http://crtrdg.github.io), [Code For Seattle](http://codeforseattle.org), [SeattleWiki](http://seattlewiki.net), and [writes books about programming, technology, & media](http://superbigtree.com/books)._
