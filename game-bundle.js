@@ -499,7 +499,7 @@ var camera = new Camera({
 
 var menu = levels.create({
   name: 'menu',
-  backgroundColor: '#ffffff'
+  backgroundColor: '#000'
 });
 
 menu.on('start', function(){
@@ -683,7 +683,7 @@ var log = new Log({
   appendTo: 'header .container'
 });
 
-},{"./inventory":5,"./item":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"crtrdg-gameloop":11,"crtrdg-keyboard":12,"crtrdg-mouse":13,"crtrdg-scene":14,"crtrdg-goal":15,"random-color":16}],16:[function(require,module,exports){
+},{"./inventory":5,"./item":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"crtrdg-gameloop":11,"crtrdg-mouse":12,"crtrdg-keyboard":13,"crtrdg-scene":14,"crtrdg-goal":15,"random-color":16}],16:[function(require,module,exports){
 module.exports = color;
 
 function num(cap){
@@ -1667,37 +1667,6 @@ Game.prototype.draw = function(){
 },{"events":18,"raf":22,"inherits":19}],12:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
-var vkey = require('vkey');
-
-module.exports = Keyboard;
-inherits(Keyboard, EventEmitter);
-
-function Keyboard(game){
-  this.game = game || {};
-  this.keysDown = {};
-  this.initializeListeners();
-}
-
-Keyboard.prototype.initializeListeners = function(){
-  var self = this;
-
-  document.addEventListener('keydown', function(e){
-    self.emit('keydown', vkey[e.keyCode]);
-    self.keysDown[vkey[e.keyCode]] = true;
-
-    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 32) {
-      e.preventDefault();
-    }
-  }, false);
-
-  document.addEventListener('keyup', function(e){
-    self.emit('keyup', vkey[e.keyCode]);
-    delete self.keysDown[vkey[e.keyCode]];
-  }, false);
-};
-},{"events":18,"vkey":21,"inherits":19}],13:[function(require,module,exports){
-var EventEmitter = require('events').EventEmitter;
-var inherits = require('inherits');
 
 module.exports = Mouse;
 inherits(Mouse, EventEmitter);
@@ -1749,7 +1718,38 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":18,"inherits":19}],14:[function(require,module,exports){
+},{"events":18,"inherits":19}],13:[function(require,module,exports){
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('inherits');
+var vkey = require('vkey');
+
+module.exports = Keyboard;
+inherits(Keyboard, EventEmitter);
+
+function Keyboard(game){
+  this.game = game || {};
+  this.keysDown = {};
+  this.initializeListeners();
+}
+
+Keyboard.prototype.initializeListeners = function(){
+  var self = this;
+
+  document.addEventListener('keydown', function(e){
+    self.emit('keydown', vkey[e.keyCode]);
+    self.keysDown[vkey[e.keyCode]] = true;
+
+    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 32) {
+      e.preventDefault();
+    }
+  }, false);
+
+  document.addEventListener('keyup', function(e){
+    self.emit('keyup', vkey[e.keyCode]);
+    delete self.keysDown[vkey[e.keyCode]];
+  }, false);
+};
+},{"events":18,"vkey":21,"inherits":19}],14:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
