@@ -318,7 +318,7 @@ var camera = new Camera({
 
 var menu = levels.create({
   name: 'menu',
-  backgroundColor: '#ffffff'
+  backgroundColor: '#000'
 });
 
 menu.on('start', function(){

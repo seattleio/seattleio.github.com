@@ -6,4 +6,10 @@ namespace :jekyll do
     system('browserify game/game.js -o game-bundle.js')
     system('jekyll serve --watch')
   end
+
+  desc "bundle"
+  task :bundle do
+    system('browserify game/game.js -o game-bundle.js')
+    system('jekyll')
+  end
 end
