@@ -90,7 +90,7 @@ h1#site-title {
 #log {
   padding: 0px;
   margin: 20px auto;
-  overflow: scroll;
+  overflow: auto;
   height: 20px;
   text-align: center;
 }
