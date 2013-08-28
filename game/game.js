@@ -115,7 +115,7 @@ keyboard.on('keydown', function(key){
       game.resume();      
     }
 
-    if (game.currentScene.name === 'game over'){
+    if (game.currentScene.name === 'game over' || game.currentScene.name === 'game win'){
       location.reload();
     }
   }
