@@ -45,8 +45,11 @@ h1#site-title {
   margin: 35px 0px 30px 0px;
 }
 
+
 .banner {
   width: 100%;
+  height: 320px;
+  /*
   background-image: url('img/photo.jpg');
   background-size: 120%;
   background-repeat: no-repeat;
@@ -56,9 +59,50 @@ h1#site-title {
   padding-left: 1%;
   padding-right: 1%;
   padding-bottom: 5%;
+  */
   -webkit-box-shadow: 0px 1px 5px 0px rgba(200, 200, 200, 0.8);
   box-shadow: 0px 1px 5px 0px rgba(200, 200, 200, 0.8);
 }
+
+.ui {
+  margin: 10px 20px 5px 0px;
+  float: left;
+}
+
+.ui .label {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: 300;
+  color: #cececa;
+}
+
+.ui .value {
+  font-size: 0.9em;
+  color: #6e6e6a;
+}
+
+.directions {
+  float: right;
+  margin-top: 10px;
+}
+
+#log {
+  padding: 0px;
+  margin: 20px auto;
+  overflow: scroll;
+  height: 20px;
+  text-align: center;
+}
+
+h2#game-title {
+  text-align: center;
+  float: none;
+  clear: both;
+  width: 100%;
+  font-size: 20px;
+}
+
 
 .welcome {
   width: 80%;
@@ -302,8 +346,6 @@ footer ul li {
 
 @media only screen and (min-width: 500px) {
   .banner {
-    padding-top: 8%;
-    padding-bottom: 8%;
   }
 
   .welcome h2 {

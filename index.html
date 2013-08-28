@@ -4,9 +4,14 @@ front: true
 ---
 
 <div class="banner">
-  <div class="welcome">
-    <h2>Learn about indie video games made in Seattle!</h2>
-  </div>
+  <canvas id="game">your browser doesn't support the html5 canvas tag. fix that.</canvas>
+</div>
+
+<div class="container">
+  <div class="health ui wrapper"><span class="label">health:</span> <span id="health" class="value"></span></div>
+  <div class="coins ui wrapper"><span class="label">gold:</span> <span id="coins" class="value"></span></div>
+  <p class="directions">wasd keys. aim/shoot with the mouse. get 100 gold to win.</p>
+  <h2 id="game-title" class="ui"></h2>
 </div>
 
 <div class="container">
@@ -139,3 +144,5 @@ front: true
 
   </div>
 </div>
+
+<script src="{{ site.baseurl }}/game-bundle.js"></script>
