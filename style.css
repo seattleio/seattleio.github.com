@@ -329,6 +329,31 @@ ul#like li {
   margin-bottom: 20px;
 }
 
+#team {
+  margin-top: 80px;
+}
+
+ul#team-members {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+li.team-member {
+  display: inline-block;
+  text-align: left;
+  width: 200px;
+  margin: 30px;
+  vertical-align: top;
+}
+
+li.team-member img {
+  width: 200px;
+  height: 200px;
+  display: block;
+
+}
+
 footer {
   margin-top: 30px;
   border-top: 1px solid #efefec;
@@ -337,11 +362,13 @@ footer {
 
 footer ul {
   text-align: center;
+  padding: 0px;
+  margin: 0px;
 }
 
 footer ul li {
   display: inline-block;
-  padding: 10px 15px;
+  padding: 10px;
 }
 
 @media only screen and (min-width: 500px) {
