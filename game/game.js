@@ -299,7 +299,7 @@ player.kill = function(){
 */
 
 var map = new Map(game, 3000, 320);
-
+map.generate();
 
 var camera = new Camera({
   follow: player,
@@ -327,10 +327,8 @@ menu.on('start', function(){
 });
 
 // set main menu as first screen
-domready(function(){
-  levels.set(menu);
-  map.generate();
-});
+levels.set(menu);
+
 
 
 /*
