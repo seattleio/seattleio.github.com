@@ -415,6 +415,7 @@ levelOne.on('start', function(){
   }
   //enemy.addTo(game);
   title.update('shoot monsters and collect gold!')
+  player.position.y = 20;
   player.visible = true;
   goals.set(levelOne.goal);
 });
