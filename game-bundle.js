@@ -180,7 +180,6 @@ Log.prototype.clear = function(){
 };
 },{}],4:[function(require,module,exports){
 var randomColor = require('random-color');
-var domready = require('domready');
 
 var Game = require('crtrdg-gameloop');
 var Keyboard = require('crtrdg-keyboard');
@@ -265,11 +264,14 @@ var ticks = 0;
 var tickStarted = false;
 function tick(){
    setTimeout(function(){
-    ticks++;
 
-    game.emit('tick', ticks);
-    map.generate(ticks);
-    player.tick();
+    if (!game.paused){
+      ticks++;
+
+      game.emit('tick', ticks);
+      map.generate(ticks);
+      player.tick();
+    }
 
     tick();
 
@@ -504,7 +506,9 @@ var menu = levels.create({
 menu.on('start', function(){
   console.log('menu screen')
   player.visible = false;
-  //game.pause();
+  setTimeout(function(){
+    game.pause();
+  }, 500);
 });
 
 // set main menu as first screen
@@ -594,7 +598,8 @@ levelOne.on('start', function(){
     tick();
     tickStarted = true;
   }
-  //enemy.addTo(game);
+
+  game.resume();
   title.update('shoot monsters and collect gold!')
   player.position.y = 20;
   player.visible = true;
@@ -692,7 +697,7 @@ var log = new Log({
   width: '300px',
   appendTo: 'header .container'
 });
-},{"./inventory":5,"./gold":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"random-color":11,"domready":12,"crtrdg-gameloop":13,"crtrdg-keyboard":14,"crtrdg-mouse":15,"crtrdg-scene":16,"crtrdg-goal":17}],11:[function(require,module,exports){
+},{"./inventory":5,"./gold":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"random-color":11,"crtrdg-gameloop":12,"crtrdg-keyboard":13,"crtrdg-mouse":14,"crtrdg-scene":15,"crtrdg-goal":16}],11:[function(require,module,exports){
 module.exports = color;
 
 function num(cap){
@@ -704,63 +709,521 @@ function color(cap){
   return 'rgb(' + num(cap) + ', ' + num(cap) + ', ' + num(cap) + ')';
 }
 
-},{}],12:[function(require,module,exports){
-/*!
-  * domready (c) Dustin Diaz 2012 - License MIT
-  */
-!function (name, definition) {
-  if (typeof module != 'undefined') module.exports = definition()
-  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
-  else this[name] = definition()
-}('domready', function (ready) {
+},{}],5:[function(require,module,exports){
+var inherits = require('inherits');
 
-  var fns = [], fn, f = false
-    , doc = document
-    , testEl = doc.documentElement
-    , hack = testEl.doScroll
-    , domContentLoaded = 'DOMContentLoaded'
-    , addEventListener = 'addEventListener'
-    , onreadystatechange = 'onreadystatechange'
-    , readyState = 'readyState'
-    , loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/
-    , loaded = loadedRgx.test(doc[readyState])
+module.exports = Inventory;
 
-  function flush(f) {
-    loaded = 1
-    while (f = fns.shift()) f()
+function Inventory(game){
+  this.game = game;
+  this.game.inventory = {};
+
+  this.createHTML();
+
+  var self = this;
+
+  this.game.on('update', function(interval){
+    if (self.isEmpty() === false){
+      self.el.style.display = 'block';
+    } else {
+      self.el.style.display = 'none';
+    }
+  });
+}
+
+Inventory.prototype.createHTML = function(){
+  this.el = document.createElement('ul');
+
+  var h3 = document.createElement('h3');
+  h3.innerHTML = 'inventory';
+
+  this.el.appendChild(h3);
+
+  document.body.appendChild(this.el);
+};
+
+Inventory.prototype.add = function(item){
+  var self = this;
+
+  this.findItem(item.name, function(exists, items){
+
+    if (exists === false){
+
+      items[item.name] = {
+        item: item,
+        quantity: 1
+      }
+
+      var li = document.createElement('li');
+      li.innerHTML = item.name;
+      li.id = item.name;
+      self.el.appendChild(li);
+
+    } else {
+      items[item.name].quantity += 1;
+    }
+
+  });
+};
+
+Inventory.prototype.remove = function(item){
+  var self = this;
+
+  this.findItem(item.name, function(exists, items){
+    if (exists){
+      if (items[item.name].quantity > 1){
+        items[item.name].quantity -= 1;
+      } else {
+        delete items[item.name];
+        var itemEl = document.getElementById(item.name);
+        self.el.removeChild(itemEl);
+      }
+    }
+  });
+};
+
+Inventory.prototype.list = function(){
+  return this.game.inventory.join(', ');
+};
+
+Inventory.prototype.findItem = function(itemNameToFind, callback){
+  if (this.isEmpty()){
+    return callback(false, this.game.inventory);
   }
 
-  doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
-    doc.removeEventListener(domContentLoaded, fn, f)
-    flush()
-  }, f)
-
-
-  hack && doc.attachEvent(onreadystatechange, fn = function () {
-    if (/^c/.test(doc[readyState])) {
-      doc.detachEvent(onreadystatechange, fn)
-      flush()
+  this.each(function(item, items){
+    if (itemNameToFind === item){
+      return callback(true, items);
+    } else {
+      return callback(false, items);
     }
+  });
+};
+
+Inventory.prototype.hasItem = function hasItem(itemName, callback){
+  this.findItem(itemName, function(exists, items){
+    if (exists){
+      return callback(true);
+    } else {
+      return callback(false);
+    }
+  });
+};
+
+Inventory.prototype.each = function each(callback){
+  for (var item in this.game.inventory){
+    callback(item, this.game.inventory);
+  }
+};
+
+Inventory.prototype.isEmpty = function isEmpty(){
+  var inventory = this.game.inventory;
+
+  for(var item in inventory) {
+    if(inventory.hasOwnProperty(item)){
+      return false;
+    }      
+  }
+  return true;
+};
+},{"inherits":17}],6:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Gold;
+inherits(Gold, Entity);
+
+function Gold(options){
+  var self = this;
+
+  this.name = options.name;
+
+  this.position = {
+    x: options.position.x,
+    y: options.position.y
+  };
+
+  this.size = {
+    x: 20,
+    y: 20
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.color = options.color;
+  this.camera = options.camera;
+  this.growing = true;
+
+  this.on('update', function(){
+    self.move();
+    self.velocity.y += .8;
+    self.growAndShrink(); 
+    self.boundaries();
   })
 
-  return (ready = hack ?
-    function (fn) {
-      self != top ?
-        loaded ? fn() : fns.push(fn) :
-        function () {
-          try {
-            testEl.doScroll('left')
-          } catch (e) {
-            return setTimeout(function() { ready(fn) }, 50)
-          }
-          fn()
-        }()
-    } :
-    function (fn) {
-      loaded ? fn() : fns.push(fn)
-    })
-})
-},{}],18:[function(require,module,exports){
+  this.on('draw', function(c){
+    c.fillStyle = this.color;
+    c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  
+  });
+}
+
+Gold.prototype.move = function(){
+  this.position.x += this.velocity.x * 0.1;
+  this.position.y += this.velocity.y * 0.1;
+};
+
+Gold.prototype.growAndShrink = function(){
+  if (this.growing){
+    this.position.x -= .1;
+    this.size.x += .2;
+    this.size.y += .1;
+    if (this.size.x >= 22){
+      this.growing = false;
+    }
+  } else {
+    this.position.x += .1;
+    this.size.x -= .2;
+    this.size.y -= .1;
+    if (this.size.x <= 18){
+      this.growing = true;
+    }
+  }
+}
+
+Gold.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.velocity.y = -10;
+    this.jumping = false;
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],7:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Player;
+inherits(Player, Entity);
+
+function Player(options){
+  this.position = { 
+    x: options.position.x, 
+    y: options.position.y 
+  };
+
+  this.size = {
+    x: options.size.x,
+    y: options.size.y
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.camera = options.camera;
+
+  this.health = options.health;
+  this.coins = 0;
+  this.strength = 5;
+  this.direction = 'right';
+  this.scrunched = false;
+  
+  this.friction = options.friction;
+  this.speed = options.speed;
+  this.color = options.color;
+  this.eyeColor = options.eyeColor;
+}
+
+Player.prototype.move = function(){
+  this.position.x += this.velocity.x * this.friction;
+  this.position.y += this.velocity.y * this.friction;
+};
+
+Player.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.position.x = 0;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.position.x = 3000 - this.size.x;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.jumping = false;
+  }
+};
+
+Player.prototype.input = function(keysdown){
+
+  if ('A' in keysdown){
+    this.direction = 'left';
+    this.velocity.x = -this.speed;
+    if (!this.jumping){
+      this.jumping = true;
+      if ('W' in keysdown){
+        this.velocity.y = -15;        
+      } else if ('S' in keysdown){
+        this.scrunched = true;
+        this.velocity.x = -2
+        this.velocity.y = 0;
+      } else {
+        this.velocity.y = -5;
+      }
+    }
+  }
+
+  if ('D' in keysdown){
+    this.direction = 'right';
+    this.velocity.x = this.speed;
+    if (!this.jumping){
+      this.jumping = true;
+      if ('W' in keysdown){
+        this.velocity.y = -15;        
+      } else if ('S' in keysdown){
+        this.scrunched = true;
+        this.velocity.x = 2
+        this.velocity.y = 0;
+      } else {
+        this.velocity.y = -5;
+      }
+    }
+  }
+
+  if ('W' in keysdown){
+    if (!this.jumping){
+      this.jumping = true;
+      this.velocity.y = -15;
+    }
+  }
+
+  if ('S' in keysdown){
+    this.scrunched = true;
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],8:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Bullet;
+inherits(Bullet, Entity);
+
+function Bullet(options){  
+  this.size = {
+    x: 10,
+    y: 10
+  };
+
+  this.target = {
+    x: options.target.x,
+    y: options.target.y
+  }
+
+  this.position = { 
+    x: options.position.x - this.size.x / 2, 
+    y: options.position.y - this.size.y / 2 
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.camera = options.camera;
+
+  this.dx = (this.target.x - this.position.x);
+  this.dy = (this.target.y - this.position.y);
+  this.mag = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+  this.speed = 20;
+  this.color = '#fff';
+
+  this.on('update', function(interval){
+
+    this.velocity.x = (this.dx / this.mag) * this.speed;
+    this.velocity.y = (this.dy / this.mag) * this.speed;
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
+    this.boundaries();
+  });
+
+  this.on('draw', function(context){
+    context.fillStyle = this.color;
+    context.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);
+  });
+
+  return this;
+}
+
+Bullet.prototype.boundaries = function(){
+  if (this.position.x < 0){
+    this.remove();
+  }
+
+  if (this.position.x > 3000){
+    this.remove();
+  }
+
+  if (this.position.y < 0){
+    this.remove();
+  }
+
+  if (this.position.y > 320){
+    this.remove();
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],9:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Enemy;
+inherits(Enemy, Entity);
+
+function Enemy(options){
+  var self = this;
+
+  this.position = { 
+    x: options.position ? options.position.x : randomInteger(100, 2500), 
+    y: options.position ? options.position.y : 120 
+  };
+
+  this.size = {
+    x: options.size ? options.size.x : 200,
+    y: options.size ? options.size.x : 200
+  };
+
+  this.velocity = {
+    x: options.velocity ? options.velocity.x : 10,
+    y: options.velocity ? options.velocity.y : 10
+  };
+
+  this.camera = options.camera;
+  this.health = options.health || 200;
+  this.speed = options.speed || 15;
+  this.friction = options.friction || 0.8;
+  this.colorMax = 175;
+  this.blockSize = 15;
+  
+  this.on('update', function(interval){
+    self.move();
+    self.velocity.y += 1.5;
+    self.boundaries();
+  });
+
+  this.on('draw', function(ctx){
+
+    var rows = parseInt(this.size.x/16);
+    var columns = parseInt(this.size.y/16);
+
+    for (var x = 0, i = 0; i < rows; x+=16, i++) {
+      for (var y = 0, j=0; j < columns; y+=16, j++) { 
+        ctx.beginPath();
+        ctx.fillStyle = randomColor(this.colorMax);                
+        ctx.rect(this.position.x - this.camera.position.x + x, this.position.y - this.camera.position.y + y, this.blockSize, this.blockSize);
+        ctx.fill();
+        ctx.closePath();
+      }
+    }   
+  });
+}
+
+Enemy.prototype.move = function(){
+  this.position.x += this.velocity.x * this.friction;
+  this.position.y += this.velocity.y * this.friction;
+};
+
+Enemy.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.velocity.y = -10;
+  }
+};
+
+Enemy.prototype.blowUp = function(){
+
+}
+
+function randomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+},{"inherits":17,"crtrdg-entity":18}],10:[function(require,module,exports){
+randomColor = require('random-color');
+
+module.exports = Map;
+
+function Map(game, width, height){
+  this.game = game;
+  this.width = width;
+  this.height = height;
+  this.image = null;
+}
+
+Map.prototype.generate = function(ticks){
+  var ctx = document.createElement('canvas').getContext('2d');
+
+  ctx.canvas.width = this.width;
+  ctx.canvas.height = this.height;
+
+  var rows = parseInt(this.width/16);
+  var columns = parseInt(this.height/16);
+
+  for (var x = 0, i = 0; i < rows; x+=16, i++) {
+    for (var y = 0, j=0; j < columns; y+=16, j++) { 
+      ctx.beginPath();      
+      ctx.fillStyle = randomColor(155);                
+      ctx.rect(x, y, 15, 15);
+      ctx.translate(.1 * ticks * 0.1, .1 * ticks * 0.1);  
+      ctx.fill();
+      ctx.closePath();
+    }
+    
+  }   
+  
+  // store the generate map as this image texture
+  this.image = new Image();
+  this.image.src = ctx.canvas.toDataURL("image/png");         
+  
+  // clear context
+  ctx = null;
+}
+
+// draw the map adjusted to camera
+Map.prototype.draw = function(context, xView, yView){         
+  context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -xView, -yView, this.image.width, this.image.height);
+}
+},{"random-color":11}],19:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -814,7 +1277,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function(process){if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -1000,521 +1463,7 @@ EventEmitter.prototype.listeners = function(type) {
 };
 
 })(require("__browserify_process"))
-},{"__browserify_process":18}],5:[function(require,module,exports){
-var inherits = require('inherits');
-
-module.exports = Inventory;
-
-function Inventory(game){
-  this.game = game;
-  this.game.inventory = {};
-
-  this.createHTML();
-
-  var self = this;
-
-  this.game.on('update', function(interval){
-    if (self.isEmpty() === false){
-      self.el.style.display = 'block';
-    } else {
-      self.el.style.display = 'none';
-    }
-  });
-}
-
-Inventory.prototype.createHTML = function(){
-  this.el = document.createElement('ul');
-
-  var h3 = document.createElement('h3');
-  h3.innerHTML = 'inventory';
-
-  this.el.appendChild(h3);
-
-  document.body.appendChild(this.el);
-};
-
-Inventory.prototype.add = function(item){
-  var self = this;
-
-  this.findItem(item.name, function(exists, items){
-
-    if (exists === false){
-
-      items[item.name] = {
-        item: item,
-        quantity: 1
-      }
-
-      var li = document.createElement('li');
-      li.innerHTML = item.name;
-      li.id = item.name;
-      self.el.appendChild(li);
-
-    } else {
-      items[item.name].quantity += 1;
-    }
-
-  });
-};
-
-Inventory.prototype.remove = function(item){
-  var self = this;
-
-  this.findItem(item.name, function(exists, items){
-    if (exists){
-      if (items[item.name].quantity > 1){
-        items[item.name].quantity -= 1;
-      } else {
-        delete items[item.name];
-        var itemEl = document.getElementById(item.name);
-        self.el.removeChild(itemEl);
-      }
-    }
-  });
-};
-
-Inventory.prototype.list = function(){
-  return this.game.inventory.join(', ');
-};
-
-Inventory.prototype.findItem = function(itemNameToFind, callback){
-  if (this.isEmpty()){
-    return callback(false, this.game.inventory);
-  }
-
-  this.each(function(item, items){
-    if (itemNameToFind === item){
-      return callback(true, items);
-    } else {
-      return callback(false, items);
-    }
-  });
-};
-
-Inventory.prototype.hasItem = function hasItem(itemName, callback){
-  this.findItem(itemName, function(exists, items){
-    if (exists){
-      return callback(true);
-    } else {
-      return callback(false);
-    }
-  });
-};
-
-Inventory.prototype.each = function each(callback){
-  for (var item in this.game.inventory){
-    callback(item, this.game.inventory);
-  }
-};
-
-Inventory.prototype.isEmpty = function isEmpty(){
-  var inventory = this.game.inventory;
-
-  for(var item in inventory) {
-    if(inventory.hasOwnProperty(item)){
-      return false;
-    }      
-  }
-  return true;
-};
-},{"inherits":20}],6:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Gold;
-inherits(Gold, Entity);
-
-function Gold(options){
-  var self = this;
-
-  this.name = options.name;
-
-  this.position = {
-    x: options.position.x,
-    y: options.position.y
-  };
-
-  this.size = {
-    x: 20,
-    y: 20
-  };
-
-  this.velocity = {
-    x: 0,
-    y: 0
-  };
-
-  this.color = options.color;
-  this.camera = options.camera;
-  this.growing = true;
-
-  this.on('update', function(){
-    self.move();
-    self.velocity.y += .8;
-    self.growAndShrink(); 
-    self.boundaries();
-  })
-
-  this.on('draw', function(c){
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  
-  });
-}
-
-Gold.prototype.move = function(){
-  this.position.x += this.velocity.x * 0.1;
-  this.position.y += this.velocity.y * 0.1;
-};
-
-Gold.prototype.growAndShrink = function(){
-  if (this.growing){
-    this.position.x -= .1;
-    this.size.x += .2;
-    this.size.y += .1;
-    if (this.size.x >= 22){
-      this.growing = false;
-    }
-  } else {
-    this.position.x += .1;
-    this.size.x -= .2;
-    this.size.y -= .1;
-    if (this.size.x <= 18){
-      this.growing = true;
-    }
-  }
-}
-
-Gold.prototype.boundaries = function(){
-  if (this.position.x <= 0){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.x >= 3000 - this.size.x){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.y <= 0){
-    this.position.y = 0;
-  }
-
-  if (this.position.y >= 320 - this.size.y){
-    this.position.y = 320 - this.size.y;
-    this.velocity.y = -10;
-    this.jumping = false;
-  }
-};
-},{"inherits":20,"crtrdg-entity":21}],7:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Player;
-inherits(Player, Entity);
-
-function Player(options){
-  this.position = { 
-    x: options.position.x, 
-    y: options.position.y 
-  };
-
-  this.size = {
-    x: options.size.x,
-    y: options.size.y
-  };
-
-  this.velocity = {
-    x: 0,
-    y: 0
-  };
-
-  this.camera = options.camera;
-
-  this.health = options.health;
-  this.coins = 0;
-  this.strength = 5;
-  this.direction = 'right';
-  this.scrunched = false;
-  
-  this.friction = options.friction;
-  this.speed = options.speed;
-  this.color = options.color;
-  this.eyeColor = options.eyeColor;
-}
-
-Player.prototype.move = function(){
-  this.position.x += this.velocity.x * this.friction;
-  this.position.y += this.velocity.y * this.friction;
-};
-
-Player.prototype.boundaries = function(){
-  if (this.position.x <= 0){
-    this.position.x = 0;
-  }
-
-  if (this.position.x >= 3000 - this.size.x){
-    this.position.x = 3000 - this.size.x;
-  }
-
-  if (this.position.y <= 0){
-    this.position.y = 0;
-  }
-
-  if (this.position.y >= 320 - this.size.y){
-    this.position.y = 320 - this.size.y;
-    this.jumping = false;
-  }
-};
-
-Player.prototype.input = function(keysdown){
-
-  if ('A' in keysdown){
-    this.direction = 'left';
-    this.velocity.x = -this.speed;
-    if (!this.jumping){
-      this.jumping = true;
-      if ('W' in keysdown){
-        this.velocity.y = -15;        
-      } else if ('S' in keysdown){
-        this.scrunched = true;
-        this.velocity.x = -2
-        this.velocity.y = 0;
-      } else {
-        this.velocity.y = -5;
-      }
-    }
-  }
-
-  if ('D' in keysdown){
-    this.direction = 'right';
-    this.velocity.x = this.speed;
-    if (!this.jumping){
-      this.jumping = true;
-      if ('W' in keysdown){
-        this.velocity.y = -15;        
-      } else if ('S' in keysdown){
-        this.scrunched = true;
-        this.velocity.x = 2
-        this.velocity.y = 0;
-      } else {
-        this.velocity.y = -5;
-      }
-    }
-  }
-
-  if ('W' in keysdown){
-    if (!this.jumping){
-      this.jumping = true;
-      this.velocity.y = -15;
-    }
-  }
-
-  if ('S' in keysdown){
-    this.scrunched = true;
-  }
-};
-},{"inherits":20,"crtrdg-entity":21}],8:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Bullet;
-inherits(Bullet, Entity);
-
-function Bullet(options){  
-  this.size = {
-    x: 10,
-    y: 10
-  };
-
-  this.target = {
-    x: options.target.x,
-    y: options.target.y
-  }
-
-  this.position = { 
-    x: options.position.x - this.size.x / 2, 
-    y: options.position.y - this.size.y / 2 
-  };
-
-  this.velocity = {
-    x: 0,
-    y: 0
-  };
-
-  this.camera = options.camera;
-
-  this.dx = (this.target.x - this.position.x);
-  this.dy = (this.target.y - this.position.y);
-  this.mag = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-  this.speed = 20;
-  this.color = '#fff';
-
-  this.on('update', function(interval){
-
-    this.velocity.x = (this.dx / this.mag) * this.speed;
-    this.velocity.y = (this.dy / this.mag) * this.speed;
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-
-    this.boundaries();
-  });
-
-  this.on('draw', function(context){
-    context.fillStyle = this.color;
-    context.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);
-  });
-
-  return this;
-}
-
-Bullet.prototype.boundaries = function(){
-  if (this.position.x < 0){
-    this.remove();
-  }
-
-  if (this.position.x > 3000){
-    this.remove();
-  }
-
-  if (this.position.y < 0){
-    this.remove();
-  }
-
-  if (this.position.y > 320){
-    this.remove();
-  }
-};
-},{"inherits":20,"crtrdg-entity":21}],9:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Enemy;
-inherits(Enemy, Entity);
-
-function Enemy(options){
-  var self = this;
-
-  this.position = { 
-    x: options.position ? options.position.x : randomInteger(100, 2500), 
-    y: options.position ? options.position.y : 120 
-  };
-
-  this.size = {
-    x: options.size ? options.size.x : 200,
-    y: options.size ? options.size.x : 200
-  };
-
-  this.velocity = {
-    x: options.velocity ? options.velocity.x : 10,
-    y: options.velocity ? options.velocity.y : 10
-  };
-
-  this.camera = options.camera;
-  this.health = options.health || 200;
-  this.speed = options.speed || 15;
-  this.friction = options.friction || 0.8;
-  this.colorMax = 175;
-  this.blockSize = 15;
-  
-  this.on('update', function(interval){
-    self.move();
-    self.velocity.y += 1.5;
-    self.boundaries();
-  });
-
-  this.on('draw', function(ctx){
-
-    var rows = parseInt(this.size.x/16);
-    var columns = parseInt(this.size.y/16);
-
-    for (var x = 0, i = 0; i < rows; x+=16, i++) {
-      for (var y = 0, j=0; j < columns; y+=16, j++) { 
-        ctx.beginPath();
-        ctx.fillStyle = randomColor(this.colorMax);                
-        ctx.rect(this.position.x - this.camera.position.x + x, this.position.y - this.camera.position.y + y, this.blockSize, this.blockSize);
-        ctx.fill();
-        ctx.closePath();
-      }
-    }   
-  });
-}
-
-Enemy.prototype.move = function(){
-  this.position.x += this.velocity.x * this.friction;
-  this.position.y += this.velocity.y * this.friction;
-};
-
-Enemy.prototype.boundaries = function(){
-  if (this.position.x <= 0){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.x >= 3000 - this.size.x){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.y <= 0){
-    this.position.y = 0;
-  }
-
-  if (this.position.y >= 320 - this.size.y){
-    this.position.y = 320 - this.size.y;
-    this.velocity.y = -10;
-  }
-};
-
-Enemy.prototype.blowUp = function(){
-
-}
-
-function randomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-},{"inherits":20,"crtrdg-entity":21}],10:[function(require,module,exports){
-randomColor = require('random-color');
-
-module.exports = Map;
-
-function Map(game, width, height){
-  this.game = game;
-  this.width = width;
-  this.height = height;
-  this.image = null;
-}
-
-Map.prototype.generate = function(ticks){
-  var ctx = document.createElement('canvas').getContext('2d');
-
-  ctx.canvas.width = this.width;
-  ctx.canvas.height = this.height;
-
-  var rows = parseInt(this.width/16);
-  var columns = parseInt(this.height/16);
-
-  for (var x = 0, i = 0; i < rows; x+=16, i++) {
-    for (var y = 0, j=0; j < columns; y+=16, j++) { 
-      ctx.beginPath();      
-      ctx.fillStyle = randomColor(155);                
-      ctx.rect(x, y, 15, 15);
-      ctx.translate(.1 * ticks * 0.1, .1 * ticks * 0.1);  
-      ctx.fill();
-      ctx.closePath();
-    }
-    
-  }   
-  
-  // store the generate map as this image texture
-  this.image = new Image();
-  this.image.src = ctx.canvas.toDataURL("image/png");         
-  
-  // clear context
-  ctx = null;
-}
-
-// draw the map adjusted to camera
-Map.prototype.draw = function(context, xView, yView){         
-  context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -xView, -yView, this.image.width, this.image.height);
-}
-},{"random-color":11}],20:[function(require,module,exports){
+},{"__browserify_process":19}],17:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1539,7 +1488,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function(){var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -1678,7 +1627,7 @@ for(i = 112; i < 136; ++i) {
 }
 
 })()
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function(){module.exports = raf
 
 var EE = require('events').EventEmitter
@@ -1732,7 +1681,7 @@ raf.now = now
 
 
 })()
-},{"events":19}],13:[function(require,module,exports){
+},{"events":20}],12:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var requestAnimationFrame = require('raf');
 var inherits = require('inherits');
@@ -1801,7 +1750,7 @@ Game.prototype.draw = function(){
   this.context.fillRect(0, 0, this.width, this.height);
   this.emit('draw', this.context)
 };
-},{"events":19,"raf":23,"inherits":20}],14:[function(require,module,exports){
+},{"events":20,"raf":22,"inherits":17}],13:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var vkey = require('vkey');
@@ -1832,7 +1781,7 @@ Keyboard.prototype.initializeListeners = function(){
     delete self.keysDown[vkey[e.keyCode]];
   }, false);
 };
-},{"events":19,"vkey":22,"inherits":20}],15:[function(require,module,exports){
+},{"events":20,"vkey":21,"inherits":17}],14:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1899,7 +1848,7 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":19,"inherits":20}],16:[function(require,module,exports){
+},{"events":20,"inherits":17}],15:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1970,7 +1919,7 @@ Scene.prototype.draw = function(context){
   this.emit('draw', context);
 };
 
-},{"events":19,"inherits":20}],17:[function(require,module,exports){
+},{"events":20,"inherits":17}],16:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -2044,7 +1993,7 @@ inherits(Goal, EventEmitter);
 function Goal(settings){
   this.name = settings.name;
 }
-},{"events":19,"inherits":20}],21:[function(require,module,exports){
+},{"events":20,"inherits":17}],18:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var aabb = require('aabb-2d');
@@ -2135,7 +2084,7 @@ Entity.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
 
-},{"events":19,"aabb-2d":24,"inherits":20}],24:[function(require,module,exports){
+},{"events":20,"aabb-2d":23,"inherits":17}],23:[function(require,module,exports){
 module.exports = AABB
 
 var vec2 = require('gl-matrix').vec2
@@ -2230,7 +2179,7 @@ proto.union = function(aabb) {
   return new AABB([base_x, base_y], [max_x - base_x, max_y - base_y])
 }
 
-},{"gl-matrix":25}],25:[function(require,module,exports){
+},{"gl-matrix":24}],24:[function(require,module,exports){
 (function(){/**
  * @fileoverview gl-matrix - High performance matrix and vector operations
  * @author Brandon Jones

@@ -1,5 +1,4 @@
 var randomColor = require('random-color');
-var domready = require('domready');
 
 var Game = require('crtrdg-gameloop');
 var Keyboard = require('crtrdg-keyboard');
@@ -84,11 +83,14 @@ var ticks = 0;
 var tickStarted = false;
 function tick(){
    setTimeout(function(){
-    ticks++;
 
-    game.emit('tick', ticks);
-    map.generate(ticks);
-    player.tick();
+    if (!game.paused){
+      ticks++;
+
+      game.emit('tick', ticks);
+      map.generate(ticks);
+      player.tick();
+    }
 
     tick();
 
@@ -323,7 +325,9 @@ var menu = levels.create({
 menu.on('start', function(){
   console.log('menu screen')
   player.visible = false;
-  //game.pause();
+  setTimeout(function(){
+    game.pause();
+  }, 500);
 });
 
 // set main menu as first screen
@@ -413,7 +417,8 @@ levelOne.on('start', function(){
     tick();
     tickStarted = true;
   }
-  //enemy.addTo(game);
+
+  game.resume();
   title.update('shoot monsters and collect gold!')
   player.position.y = 20;
   player.visible = true;
