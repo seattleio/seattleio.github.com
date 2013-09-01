@@ -1,9 +1,12 @@
+var randomColor = require('random-color');
+var domready = require('domready');
+
 var Game = require('crtrdg-gameloop');
 var Keyboard = require('crtrdg-keyboard');
 var Mouse = require('crtrdg-mouse');
 var Levels = require('crtrdg-scene');
 var Goals = require('crtrdg-goal');
-var randomColor = require('random-color');
+
 var Inventory = require('./inventory');
 var Gold = require('./gold');
 var Player = require('./player');
@@ -296,7 +299,7 @@ player.kill = function(){
 */
 
 var map = new Map(game, 3000, 320);
-map.generate();
+
 
 var camera = new Camera({
   follow: player,
@@ -324,7 +327,10 @@ menu.on('start', function(){
 });
 
 // set main menu as first screen
-levels.set(menu);
+domready(function(){
+  levels.set(menu);
+  map.generate();
+});
 
 
 /*
