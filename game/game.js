@@ -115,7 +115,7 @@ keyboard.on('keydown', function(key){
   if (key === '<space>'){
     if (game.currentScene.name === 'menu'){
       levels.set(levelOne);
-      game.resume();      
+      //game.resume();      
     }
 
     if (game.currentScene.name === 'game over'){
@@ -323,7 +323,7 @@ var menu = levels.create({
 menu.on('start', function(){
   console.log('menu screen')
   player.visible = false;
-  game.pause();
+  //game.pause();
 });
 
 // set main menu as first screen
