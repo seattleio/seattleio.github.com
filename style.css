@@ -338,6 +338,11 @@ ul#like li {
   margin-bottom: 20px;
 }
 
+#post img {
+  max-width: 100%;
+  height: auto;
+}
+
 #team {
   margin-top: 80px;
 }
