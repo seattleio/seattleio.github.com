@@ -20,6 +20,10 @@ function Item(options){
   this.color = options.color;
   this.camera = options.camera;
 
+  this.on('update', function(){
+    this.velocity.y += 1.5;
+  })
+
   this.on('draw', function(c){
     c.fillStyle = this.color;
     c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  

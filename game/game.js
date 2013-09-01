@@ -5,7 +5,7 @@ var Levels = require('crtrdg-scene');
 var Goals = require('crtrdg-goal');
 var randomColor = require('random-color');
 var Inventory = require('./inventory');
-var Item = require('./item');
+var Gold = require('./gold');
 var Player = require('./player');
 var Bullet = require('./bullet');
 var Camera = require('./camera');
@@ -84,7 +84,7 @@ function tick(){
     ticks++;
 
     game.emit('tick', ticks);
-    map.generate();
+    map.generate(ticks);
     player.tick();
 
     tick();
@@ -115,7 +115,7 @@ keyboard.on('keydown', function(key){
       game.resume();      
     }
 
-    if (game.currentScene.name === 'game over' || game.currentScene.name === 'game win'){
+    if (game.currentScene.name === 'game over'){
       location.reload();
     }
   }
@@ -154,22 +154,18 @@ mouse.on('click', function(location){
       for (var i=0; i<monsters.length; i++){
         if (this.touches(monsters[i])){
           this.remove();
-          monsters[i].health -= 10;
+          monsters[i].health -= 11;
+          monsters[i].size.x -= 9;
+          monsters[i].size.y -= 9;
+          monsters[i].colorMax += 30;
+          monsters[i].blockSize -= .1;
           if (monsters[i].health <= 0){
+            monsters[i].blowUp();
             monsters[i].remove();
-            monsters[i].color = randomColor();
             player.color = '#fff';
             player.eyeColor = '#f00';
-            gold.push(new Item({
-              name: 'gold',
-              color: '#FFD700',
-              camera: camera,
-              position: {
-                x: monsters[i].position.x,
-                y: game.height - 20
-              }
-            }));
             gold[i].addTo(game);
+            gold[i].position.x = monsters[i].position.x;
           }
         }
       }
@@ -190,8 +186,8 @@ var player = new Player({
     y: 55
   },
   position: {
-    x: game.width / 2 - 4,
-    y: game.height / 2 - 6,
+    x: 100,
+    y: 10,
   },
   color: '#fff',
   eyeColor: '#cececa',
@@ -260,7 +256,7 @@ player.on('draw', function(context){
 
 player.tick = function(){
   if (this.health > 0){
-    this.setHealth(-1);
+    this.setHealth(5);
   }
 
   if (this.health <= 0){
@@ -344,7 +340,7 @@ var gameOver = levels.create({
 
 gameOver.on('start', function(){
   player.visible = false;
-  title.update('GAME OVER');
+  title.update('GAME OVER YOU LOST SO BAD TRY AGAIN!');
   game.pause();
 });
 
@@ -361,7 +357,7 @@ var gameWin = levels.create({
 });
 
 gameWin.on('start', function(){
-  title.update('YOU WIN');
+  title.update("YOU WIN YOU ARE SO GREAT HEY IF YOU DIDN'T FIND IT THERE'S A SECRET FLYING ABILITY!");
   game.pause();
 });
 
@@ -377,7 +373,9 @@ var pauseMenu = levels.create({
   backgroundColor: 'blue'
 });
 
-pauseMenu.on('start', function(){});
+pauseMenu.on('start', function(){
+
+});
 
 
 /*
@@ -407,26 +405,33 @@ levelOne.goal.on('met', function(){
 });
 
 levelOne.on('start', function(){
-
   if (!tickStarted){
     tick();
     tickStarted = true;
   }
-
+  //enemy.addTo(game);
+  title.update('shoot monsters and collect gold!')
   player.visible = true;
   goals.set(levelOne.goal);
-  title.update('every ten seconds a new monster will spawn.')
 });
 
 levelOne.on('tick', function(ticks){
   console.log(ticks)
-  if (ticks < 6){
-    monsters.push(new Enemy({
-      camera: camera,
-      color: '#fe123d'
-    }))
-    monsters[ticks-1].addTo(game);
-  }
+  monsters.push(new Enemy({
+    camera: camera,
+    color: '#fe123d'
+  }));
+  monsters[ticks-1].addTo(game);
+
+  gold.push(new Gold({
+    name: 'gold',
+    color: '#FFD700',
+    camera: camera,
+    position: {
+      x: 0,
+      y: game.height - 30
+    }
+  }));
 });
 
 levelOne.on('update', function(){
@@ -434,7 +439,7 @@ levelOne.on('update', function(){
     if(player.touches(gold[i])){
       log.add('you found gold!');
       gold[i].remove();
-      player.setCoins(25);
+      player.setCoins(5);
     }
   }
 
@@ -493,7 +498,7 @@ var strength = new Text({
 
 var title = new Text({
   el: '#game-title',
-  html: 'press the space bar to play!'
+  html: 'press space to play!'
 });
 
 var log = new Log({

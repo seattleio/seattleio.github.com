@@ -186,7 +186,7 @@ var Levels = require('crtrdg-scene');
 var Goals = require('crtrdg-goal');
 var randomColor = require('random-color');
 var Inventory = require('./inventory');
-var Item = require('./item');
+var Gold = require('./gold');
 var Player = require('./player');
 var Bullet = require('./bullet');
 var Camera = require('./camera');
@@ -265,7 +265,7 @@ function tick(){
     ticks++;
 
     game.emit('tick', ticks);
-    map.generate();
+    map.generate(ticks);
     player.tick();
 
     tick();
@@ -296,7 +296,7 @@ keyboard.on('keydown', function(key){
       game.resume();      
     }
 
-    if (game.currentScene.name === 'game over' || game.currentScene.name === 'game win'){
+    if (game.currentScene.name === 'game over'){
       location.reload();
     }
   }
@@ -335,22 +335,18 @@ mouse.on('click', function(location){
       for (var i=0; i<monsters.length; i++){
         if (this.touches(monsters[i])){
           this.remove();
-          monsters[i].health -= 10;
+          monsters[i].health -= 11;
+          monsters[i].size.x -= 9;
+          monsters[i].size.y -= 9;
+          monsters[i].colorMax += 30;
+          monsters[i].blockSize -= .1;
           if (monsters[i].health <= 0){
+            monsters[i].blowUp();
             monsters[i].remove();
-            monsters[i].color = randomColor();
             player.color = '#fff';
             player.eyeColor = '#f00';
-            gold.push(new Item({
-              name: 'gold',
-              color: '#FFD700',
-              camera: camera,
-              position: {
-                x: monsters[i].position.x,
-                y: game.height - 20
-              }
-            }));
             gold[i].addTo(game);
+            gold[i].position.x = monsters[i].position.x;
           }
         }
       }
@@ -371,8 +367,8 @@ var player = new Player({
     y: 55
   },
   position: {
-    x: game.width / 2 - 4,
-    y: game.height / 2 - 6,
+    x: 100,
+    y: 10,
   },
   color: '#fff',
   eyeColor: '#cececa',
@@ -441,7 +437,7 @@ player.on('draw', function(context){
 
 player.tick = function(){
   if (this.health > 0){
-    this.setHealth(-1);
+    this.setHealth(5);
   }
 
   if (this.health <= 0){
@@ -525,7 +521,7 @@ var gameOver = levels.create({
 
 gameOver.on('start', function(){
   player.visible = false;
-  title.update('GAME OVER');
+  title.update('GAME OVER YOU LOST SO BAD TRY AGAIN!');
   game.pause();
 });
 
@@ -542,7 +538,7 @@ var gameWin = levels.create({
 });
 
 gameWin.on('start', function(){
-  title.update('YOU WIN');
+  title.update("YOU WIN YOU ARE SO GREAT HEY IF YOU DIDN'T FIND IT THERE'S A SECRET FLYING ABILITY!");
   game.pause();
 });
 
@@ -558,7 +554,9 @@ var pauseMenu = levels.create({
   backgroundColor: 'blue'
 });
 
-pauseMenu.on('start', function(){});
+pauseMenu.on('start', function(){
+
+});
 
 
 /*
@@ -588,26 +586,33 @@ levelOne.goal.on('met', function(){
 });
 
 levelOne.on('start', function(){
-
   if (!tickStarted){
     tick();
     tickStarted = true;
   }
-
+  //enemy.addTo(game);
+  title.update('shoot monsters and collect gold!')
   player.visible = true;
   goals.set(levelOne.goal);
-  title.update('every ten seconds a new monster will spawn.')
 });
 
 levelOne.on('tick', function(ticks){
   console.log(ticks)
-  if (ticks < 6){
-    monsters.push(new Enemy({
-      camera: camera,
-      color: '#fe123d'
-    }))
-    monsters[ticks-1].addTo(game);
-  }
+  monsters.push(new Enemy({
+    camera: camera,
+    color: '#fe123d'
+  }));
+  monsters[ticks-1].addTo(game);
+
+  gold.push(new Gold({
+    name: 'gold',
+    color: '#FFD700',
+    camera: camera,
+    position: {
+      x: 0,
+      y: game.height - 30
+    }
+  }));
 });
 
 levelOne.on('update', function(){
@@ -615,7 +620,7 @@ levelOne.on('update', function(){
     if(player.touches(gold[i])){
       log.add('you found gold!');
       gold[i].remove();
-      player.setCoins(25);
+      player.setCoins(5);
     }
   }
 
@@ -674,7 +679,7 @@ var strength = new Text({
 
 var title = new Text({
   el: '#game-title',
-  html: 'press the space bar to play!'
+  html: 'press space to play!'
 });
 
 var log = new Log({
@@ -682,8 +687,7 @@ var log = new Log({
   width: '300px',
   appendTo: 'header .container'
 });
-
-},{"./inventory":5,"./item":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"crtrdg-gameloop":11,"crtrdg-keyboard":12,"crtrdg-mouse":13,"crtrdg-scene":14,"crtrdg-goal":15,"random-color":16}],16:[function(require,module,exports){
+},{"./inventory":5,"./gold":6,"./player":7,"./bullet":8,"./camera":1,"./enemy":9,"./map":10,"./text":2,"./log":3,"crtrdg-gameloop":11,"crtrdg-keyboard":12,"crtrdg-mouse":13,"crtrdg-scene":14,"crtrdg-goal":15,"random-color":16}],16:[function(require,module,exports){
 module.exports = color;
 
 function num(cap){
@@ -695,7 +699,546 @@ function color(cap){
   return 'rgb(' + num(cap) + ', ' + num(cap) + ', ' + num(cap) + ')';
 }
 
-},{}],17:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+var inherits = require('inherits');
+
+module.exports = Inventory;
+
+function Inventory(game){
+  this.game = game;
+  this.game.inventory = {};
+
+  this.createHTML();
+
+  var self = this;
+
+  this.game.on('update', function(interval){
+    if (self.isEmpty() === false){
+      self.el.style.display = 'block';
+    } else {
+      self.el.style.display = 'none';
+    }
+  });
+}
+
+Inventory.prototype.createHTML = function(){
+  this.el = document.createElement('ul');
+
+  var h3 = document.createElement('h3');
+  h3.innerHTML = 'inventory';
+
+  this.el.appendChild(h3);
+
+  document.body.appendChild(this.el);
+};
+
+Inventory.prototype.add = function(item){
+  var self = this;
+
+  this.findItem(item.name, function(exists, items){
+
+    if (exists === false){
+
+      items[item.name] = {
+        item: item,
+        quantity: 1
+      }
+
+      var li = document.createElement('li');
+      li.innerHTML = item.name;
+      li.id = item.name;
+      self.el.appendChild(li);
+
+    } else {
+      items[item.name].quantity += 1;
+    }
+
+  });
+};
+
+Inventory.prototype.remove = function(item){
+  var self = this;
+
+  this.findItem(item.name, function(exists, items){
+    if (exists){
+      if (items[item.name].quantity > 1){
+        items[item.name].quantity -= 1;
+      } else {
+        delete items[item.name];
+        var itemEl = document.getElementById(item.name);
+        self.el.removeChild(itemEl);
+      }
+    }
+  });
+};
+
+Inventory.prototype.list = function(){
+  return this.game.inventory.join(', ');
+};
+
+Inventory.prototype.findItem = function(itemNameToFind, callback){
+  if (this.isEmpty()){
+    return callback(false, this.game.inventory);
+  }
+
+  this.each(function(item, items){
+    if (itemNameToFind === item){
+      return callback(true, items);
+    } else {
+      return callback(false, items);
+    }
+  });
+};
+
+Inventory.prototype.hasItem = function hasItem(itemName, callback){
+  this.findItem(itemName, function(exists, items){
+    if (exists){
+      return callback(true);
+    } else {
+      return callback(false);
+    }
+  });
+};
+
+Inventory.prototype.each = function each(callback){
+  for (var item in this.game.inventory){
+    callback(item, this.game.inventory);
+  }
+};
+
+Inventory.prototype.isEmpty = function isEmpty(){
+  var inventory = this.game.inventory;
+
+  for(var item in inventory) {
+    if(inventory.hasOwnProperty(item)){
+      return false;
+    }      
+  }
+  return true;
+};
+},{"inherits":17}],6:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Gold;
+inherits(Gold, Entity);
+
+function Gold(options){
+  var self = this;
+
+  this.name = options.name;
+
+  this.position = {
+    x: options.position.x,
+    y: options.position.y
+  };
+
+  this.size = {
+    x: 20,
+    y: 20
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.color = options.color;
+  this.camera = options.camera;
+  this.growing = true;
+
+  this.on('update', function(){
+    self.move();
+    self.velocity.y += .8;
+    self.growAndShrink(); 
+    self.boundaries();
+  })
+
+  this.on('draw', function(c){
+    c.fillStyle = this.color;
+    c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  
+  });
+}
+
+Gold.prototype.move = function(){
+  this.position.x += this.velocity.x * 0.1;
+  this.position.y += this.velocity.y * 0.1;
+};
+
+Gold.prototype.growAndShrink = function(){
+  if (this.growing){
+    this.position.x -= .1;
+    this.size.x += .2;
+    this.size.y += .1;
+    if (this.size.x >= 22){
+      this.growing = false;
+    }
+  } else {
+    this.position.x += .1;
+    this.size.x -= .2;
+    this.size.y -= .1;
+    if (this.size.x <= 18){
+      this.growing = true;
+    }
+  }
+}
+
+Gold.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.velocity.y = -10;
+    this.jumping = false;
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],7:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Player;
+inherits(Player, Entity);
+
+function Player(options){
+  this.position = { 
+    x: options.position.x, 
+    y: options.position.y 
+  };
+
+  this.size = {
+    x: options.size.x,
+    y: options.size.y
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.camera = options.camera;
+
+  this.health = options.health;
+  this.coins = 0;
+  this.strength = 5;
+  this.direction = 'right';
+  this.scrunched = false;
+  
+  this.friction = options.friction;
+  this.speed = options.speed;
+  this.color = options.color;
+  this.eyeColor = options.eyeColor;
+}
+
+Player.prototype.move = function(){
+  this.position.x += this.velocity.x * this.friction;
+  this.position.y += this.velocity.y * this.friction;
+};
+
+Player.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.position.x = 0;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.position.x = 3000 - this.size.x;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.jumping = false;
+  }
+};
+
+Player.prototype.input = function(keysdown){
+
+  if ('A' in keysdown){
+    this.direction = 'left';
+    this.velocity.x = -this.speed;
+    if (!this.jumping){
+      this.jumping = true;
+      if ('W' in keysdown){
+        this.velocity.y = -15;        
+      } else if ('S' in keysdown){
+        this.scrunched = true;
+        this.velocity.x = -2
+        this.velocity.y = 0;
+      } else {
+        this.velocity.y = -5;
+      }
+    }
+  }
+
+  if ('D' in keysdown){
+    this.direction = 'right';
+    this.velocity.x = this.speed;
+    if (!this.jumping){
+      this.jumping = true;
+      if ('W' in keysdown){
+        this.velocity.y = -15;        
+      } else if ('S' in keysdown){
+        this.scrunched = true;
+        this.velocity.x = 2
+        this.velocity.y = 0;
+      } else {
+        this.velocity.y = -5;
+      }
+    }
+  }
+
+  if ('W' in keysdown){
+    if (!this.jumping){
+      this.jumping = true;
+      this.velocity.y = -15;
+    }
+  }
+
+  if ('S' in keysdown){
+    this.scrunched = true;
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],8:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Bullet;
+inherits(Bullet, Entity);
+
+function Bullet(options){  
+  this.size = {
+    x: 10,
+    y: 10
+  };
+
+  this.target = {
+    x: options.target.x,
+    y: options.target.y
+  }
+
+  this.position = { 
+    x: options.position.x - this.size.x / 2, 
+    y: options.position.y - this.size.y / 2 
+  };
+
+  this.velocity = {
+    x: 0,
+    y: 0
+  };
+
+  this.camera = options.camera;
+
+  this.dx = (this.target.x - this.position.x);
+  this.dy = (this.target.y - this.position.y);
+  this.mag = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+  this.speed = 20;
+  this.color = '#fff';
+
+  this.on('update', function(interval){
+
+    this.velocity.x = (this.dx / this.mag) * this.speed;
+    this.velocity.y = (this.dy / this.mag) * this.speed;
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
+    this.boundaries();
+  });
+
+  this.on('draw', function(context){
+    context.fillStyle = this.color;
+    context.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);
+  });
+
+  return this;
+}
+
+Bullet.prototype.boundaries = function(){
+  if (this.position.x < 0){
+    this.remove();
+  }
+
+  if (this.position.x > 3000){
+    this.remove();
+  }
+
+  if (this.position.y < 0){
+    this.remove();
+  }
+
+  if (this.position.y > 320){
+    this.remove();
+  }
+};
+},{"inherits":17,"crtrdg-entity":18}],10:[function(require,module,exports){
+randomColor = require('random-color');
+
+module.exports = Map;
+
+function Map(game, width, height){
+  this.game = game;
+  this.width = width;
+  this.height = height;
+  this.image = null;
+}
+
+Map.prototype.generate = function(ticks){
+  var ctx = document.createElement('canvas').getContext('2d');
+
+  ctx.canvas.width = this.width;
+  ctx.canvas.height = this.height;
+
+  var rows = parseInt(this.width/16);
+  var columns = parseInt(this.height/16);
+
+  for (var x = 0, i = 0; i < rows; x+=16, i++) {
+    for (var y = 0, j=0; j < columns; y+=16, j++) { 
+      ctx.beginPath();      
+      ctx.fillStyle = randomColor(155);                
+      ctx.rect(x, y, 15, 15);
+      ctx.translate(.1 * ticks * 0.1, .1 * ticks * 0.1);  
+      ctx.fill();
+      ctx.closePath();
+    }
+    
+  }   
+  
+  // store the generate map as this image texture
+  this.image = new Image();
+  this.image.src = ctx.canvas.toDataURL("image/png");         
+  
+  // clear context
+  ctx = null;
+}
+
+// draw the map adjusted to camera
+Map.prototype.draw = function(context, xView, yView){         
+  context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -xView, -yView, this.image.width, this.image.height);
+}
+},{"random-color":16}],9:[function(require,module,exports){
+var inherits = require('inherits');
+var Entity = require('crtrdg-entity');
+
+module.exports = Enemy;
+inherits(Enemy, Entity);
+
+function Enemy(options){
+  var self = this;
+
+  this.position = { 
+    x: options.position ? options.position.x : randomInteger(100, 2500), 
+    y: options.position ? options.position.y : 120 
+  };
+
+  this.size = {
+    x: options.size ? options.size.x : 200,
+    y: options.size ? options.size.x : 200
+  };
+
+  this.velocity = {
+    x: options.velocity ? options.velocity.x : 10,
+    y: options.velocity ? options.velocity.y : 10
+  };
+
+  this.camera = options.camera;
+  this.health = options.health || 200;
+  this.speed = options.speed || 15;
+  this.friction = options.friction || 0.8;
+  this.colorMax = 175;
+  this.blockSize = 15;
+  
+  this.on('update', function(interval){
+    self.move();
+    self.velocity.y += 1.5;
+    self.boundaries();
+  });
+
+  this.on('draw', function(ctx){
+
+    var rows = parseInt(this.size.x/16);
+    var columns = parseInt(this.size.y/16);
+
+    for (var x = 0, i = 0; i < rows; x+=16, i++) {
+      for (var y = 0, j=0; j < columns; y+=16, j++) { 
+        ctx.beginPath();
+        ctx.fillStyle = randomColor(this.colorMax);                
+        ctx.rect(this.position.x - this.camera.position.x + x, this.position.y - this.camera.position.y + y, this.blockSize, this.blockSize);
+        ctx.fill();
+        ctx.closePath();
+      }
+    }   
+  });
+}
+
+Enemy.prototype.move = function(){
+  this.position.x += this.velocity.x * this.friction;
+  this.position.y += this.velocity.y * this.friction;
+};
+
+Enemy.prototype.boundaries = function(){
+  if (this.position.x <= 0){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.x >= 3000 - this.size.x){
+    this.velocity.x *= -1;
+  }
+
+  if (this.position.y <= 0){
+    this.position.y = 0;
+  }
+
+  if (this.position.y >= 320 - this.size.y){
+    this.position.y = 320 - this.size.y;
+    this.velocity.y = -10;
+  }
+};
+
+Enemy.prototype.blowUp = function(){
+
+}
+
+function randomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+},{"inherits":17,"crtrdg-entity":18}],17:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],19:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -749,7 +1292,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function(process){if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -935,474 +1478,7 @@ EventEmitter.prototype.listeners = function(type) {
 };
 
 })(require("__browserify_process"))
-},{"__browserify_process":17}],5:[function(require,module,exports){
-var inherits = require('inherits');
-
-module.exports = Inventory;
-
-function Inventory(game){
-  this.game = game;
-  this.game.inventory = {};
-
-  this.createHTML();
-
-  var self = this;
-
-  this.game.on('update', function(interval){
-    if (self.isEmpty() === false){
-      self.el.style.display = 'block';
-    } else {
-      self.el.style.display = 'none';
-    }
-  });
-}
-
-Inventory.prototype.createHTML = function(){
-  this.el = document.createElement('ul');
-
-  var h3 = document.createElement('h3');
-  h3.innerHTML = 'inventory';
-
-  this.el.appendChild(h3);
-
-  document.body.appendChild(this.el);
-};
-
-Inventory.prototype.add = function(item){
-  var self = this;
-
-  this.findItem(item.name, function(exists, items){
-
-    if (exists === false){
-
-      items[item.name] = {
-        item: item,
-        quantity: 1
-      }
-
-      var li = document.createElement('li');
-      li.innerHTML = item.name;
-      li.id = item.name;
-      self.el.appendChild(li);
-
-    } else {
-      items[item.name].quantity += 1;
-    }
-
-  });
-};
-
-Inventory.prototype.remove = function(item){
-  var self = this;
-
-  this.findItem(item.name, function(exists, items){
-    if (exists){
-      if (items[item.name].quantity > 1){
-        items[item.name].quantity -= 1;
-      } else {
-        delete items[item.name];
-        var itemEl = document.getElementById(item.name);
-        self.el.removeChild(itemEl);
-      }
-    }
-  });
-};
-
-Inventory.prototype.list = function(){
-  return this.game.inventory.join(', ');
-};
-
-Inventory.prototype.findItem = function(itemNameToFind, callback){
-  if (this.isEmpty()){
-    return callback(false, this.game.inventory);
-  }
-
-  this.each(function(item, items){
-    if (itemNameToFind === item){
-      return callback(true, items);
-    } else {
-      return callback(false, items);
-    }
-  });
-};
-
-Inventory.prototype.hasItem = function hasItem(itemName, callback){
-  this.findItem(itemName, function(exists, items){
-    if (exists){
-      return callback(true);
-    } else {
-      return callback(false);
-    }
-  });
-};
-
-Inventory.prototype.each = function each(callback){
-  for (var item in this.game.inventory){
-    callback(item, this.game.inventory);
-  }
-};
-
-Inventory.prototype.isEmpty = function isEmpty(){
-  var inventory = this.game.inventory;
-
-  for(var item in inventory) {
-    if(inventory.hasOwnProperty(item)){
-      return false;
-    }      
-  }
-  return true;
-};
-},{"inherits":19}],6:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Item;
-inherits(Item, Entity);
-
-function Item(options){
-  this.name = options.name;
-
-  this.position = {
-    x: options.position.x,
-    y: options.position.y
-  };
-
-  this.size = {
-    x: 20,
-    y: 20
-  };
-
-  this.color = options.color;
-  this.camera = options.camera;
-
-  this.on('draw', function(c){
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  
-  });
-}
-},{"inherits":19,"crtrdg-entity":20}],7:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Player;
-inherits(Player, Entity);
-
-function Player(options){
-  this.position = { 
-    x: options.position.x, 
-    y: options.position.y 
-  };
-
-  this.size = {
-    x: options.size.x,
-    y: options.size.y
-  };
-
-  this.velocity = {
-    x: 0,
-    y: 0
-  };
-
-  this.camera = options.camera;
-
-  this.health = options.health;
-  this.coins = 0;
-  this.strength = 5;
-  this.direction = 'right';
-  this.scrunched = false;
-  
-  this.friction = options.friction;
-  this.speed = options.speed;
-  this.color = options.color;
-  this.eyeColor = options.eyeColor;
-}
-
-Player.prototype.move = function(){
-  this.position.x += this.velocity.x * this.friction;
-  this.position.y += this.velocity.y * this.friction;
-};
-
-Player.prototype.boundaries = function(){
-  if (this.position.x <= 0){
-    this.position.x = 0;
-  }
-
-  if (this.position.x >= 3000 - this.size.x){
-    this.position.x = 3000 - this.size.x;
-  }
-
-  if (this.position.y <= 0){
-    this.position.y = 0;
-  }
-
-  if (this.position.y >= 320 - this.size.y){
-    this.position.y = 320 - this.size.y;
-    this.jumping = false;
-  }
-};
-
-Player.prototype.input = function(keysdown){
-
-  if ('A' in keysdown){
-    this.direction = 'left';
-    this.velocity.x = -this.speed;
-    if (!this.jumping){
-      this.jumping = true;
-      if ('W' in keysdown){
-        this.velocity.y = -15;        
-      } else if ('S' in keysdown){
-        this.scrunched = true;
-        this.velocity.x = -2
-        this.velocity.y = 0;
-      } else {
-        this.velocity.y = -5;
-      }
-    }
-  }
-
-  if ('D' in keysdown){
-    this.direction = 'right';
-    this.velocity.x = this.speed;
-    if (!this.jumping){
-      this.jumping = true;
-      if ('W' in keysdown){
-        this.velocity.y = -15;        
-      } else if ('S' in keysdown){
-        this.scrunched = true;
-        this.velocity.x = 2
-        this.velocity.y = 0;
-      } else {
-        this.velocity.y = -5;
-      }
-    }
-  }
-
-  if ('W' in keysdown){
-    if (!this.jumping){
-      this.jumping = true;
-      this.velocity.y = -15;
-    }
-  }
-
-  if ('S' in keysdown){
-    this.scrunched = true;
-  }
-};
-},{"inherits":19,"crtrdg-entity":20}],8:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Bullet;
-inherits(Bullet, Entity);
-
-function Bullet(options){  
-  this.size = {
-    x: 10,
-    y: 10
-  };
-
-  this.target = {
-    x: options.target.x,
-    y: options.target.y
-  }
-
-  this.position = { 
-    x: options.position.x - this.size.x / 2, 
-    y: options.position.y - this.size.y / 2 
-  };
-
-  this.velocity = {
-    x: 0,
-    y: 0
-  };
-
-  this.camera = options.camera;
-
-  this.dx = (this.target.x - this.position.x);
-  this.dy = (this.target.y - this.position.y);
-  this.mag = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-  this.speed = 20;
-  this.color = '#fff';
-
-  this.on('update', function(interval){
-
-    this.velocity.x = (this.dx / this.mag) * this.speed;
-    this.velocity.y = (this.dy / this.mag) * this.speed;
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-
-    this.boundaries();
-  });
-
-  this.on('draw', function(context){
-    context.fillStyle = this.color;
-    context.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);
-  });
-
-  return this;
-}
-
-Bullet.prototype.boundaries = function(){
-  if (this.position.x < 0){
-    this.remove();
-  }
-
-  if (this.position.x > 3000){
-    this.remove();
-  }
-
-  if (this.position.y < 0){
-    this.remove();
-  }
-
-  if (this.position.y > 320){
-    this.remove();
-  }
-};
-},{"inherits":19,"crtrdg-entity":20}],9:[function(require,module,exports){
-var inherits = require('inherits');
-var Entity = require('crtrdg-entity');
-
-module.exports = Enemy;
-inherits(Enemy, Entity);
-
-function Enemy(options){
-  var self = this;
-
-  this.position = { 
-    x: options.position ? options.position.x : randomInteger(100, 2500), 
-    y: options.position ? options.position.y : 120 
-  };
-
-  this.size = {
-    x: options.size ? options.size.x : 200,
-    y: options.size ? options.size.x : 200
-  };
-
-  this.velocity = {
-    x: options.velocity ? options.velocity.x : 10,
-    y: options.velocity ? options.velocity.y : 10
-  };
-
-  this.camera = options.camera;
-  this.health = options.health || 200;
-  this.speed = options.speed || 15;
-  this.friction = options.friction || 0.8;
-  this.color = options.color;
-  
-  this.on('update', function(interval){
-    self.move();
-    this.velocity.y += 1.5;
-    self.boundaries();
-  });
-
-  this.on('draw', function(c){
-    c.fillStyle = randomColor();
-    c.fillRect(this.position.x - this.camera.position.x, this.position.y - this.camera.position.y, this.size.x, this.size.y);  
-  });
-}
-
-Enemy.prototype.move = function(){
-  this.position.x += this.velocity.x * this.friction;
-  this.position.y += this.velocity.y * this.friction;
-};
-
-Enemy.prototype.boundaries = function(){
-  if (this.position.x <= 0){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.x >= 3000 - this.size.x){
-    this.velocity.x *= -1;
-  }
-
-  if (this.position.y <= 0){
-    this.position.y = 0;
-  }
-
-  if (this.position.y >= 320 - this.size.y){
-    this.position.y = 320 - this.size.y;
-    this.velocity.y = -10;
-    this.jumping = false;
-  }
-};
-
-function randomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-},{"inherits":19,"crtrdg-entity":20}],10:[function(require,module,exports){
-randomColor = require('random-color');
-
-module.exports = Map;
-
-function Map(game, width, height){
-  this.game = game;
-  this.width = width;
-  this.height = height;
-  this.image = null;
-}
-
-Map.prototype.generate = function(callback){
-  var ctx = document.createElement('canvas').getContext('2d');
-
-  ctx.canvas.width = this.width;
-  ctx.canvas.height = this.height;
-
-  var rows = parseInt(this.width/16+1);
-  var columns = parseInt(this.height/16+1);
-
-  ctx.save();     
-  for (var x = 0, i = 0; i < rows; x+=16, i++) {
-    for (var y = 0, j=0; j < columns; y+=16, j++) { 
-      ctx.beginPath();      
-      ctx.fillStyle = randomColor(155);                
-      ctx.rect(x, y, 15, 15);        
-      ctx.fill();
-      ctx.closePath();
-    }
-    
-  }   
-  ctx.restore();  
-  
-  // store the generate map as this image texture
-  this.image = new Image();
-  this.image.src = ctx.canvas.toDataURL("image/png");         
-  
-  // clear context
-  ctx = null;
-}
-
-// draw the map adjusted to camera
-Map.prototype.draw = function(context, xView, yView){         
-  context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -xView, -yView, this.image.width, this.image.height);
-}
-},{"random-color":16}],19:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],21:[function(require,module,exports){
+},{"__browserify_process":19}],21:[function(require,module,exports){
 (function(){var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -1595,7 +1671,7 @@ raf.now = now
 
 
 })()
-},{"events":18}],11:[function(require,module,exports){
+},{"events":20}],11:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var requestAnimationFrame = require('raf');
 var inherits = require('inherits');
@@ -1664,7 +1740,7 @@ Game.prototype.draw = function(){
   this.context.fillRect(0, 0, this.width, this.height);
   this.emit('draw', this.context)
 };
-},{"events":18,"raf":22,"inherits":19}],12:[function(require,module,exports){
+},{"events":20,"raf":22,"inherits":17}],12:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var vkey = require('vkey');
@@ -1695,7 +1771,7 @@ Keyboard.prototype.initializeListeners = function(){
     delete self.keysDown[vkey[e.keyCode]];
   }, false);
 };
-},{"events":18,"vkey":21,"inherits":19}],13:[function(require,module,exports){
+},{"events":20,"vkey":21,"inherits":17}],13:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1749,7 +1825,7 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":18,"inherits":19}],14:[function(require,module,exports){
+},{"events":20,"inherits":17}],14:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1820,7 +1896,7 @@ Scene.prototype.draw = function(context){
   this.emit('draw', context);
 };
 
-},{"events":18,"inherits":19}],15:[function(require,module,exports){
+},{"events":20,"inherits":17}],15:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1894,7 +1970,7 @@ inherits(Goal, EventEmitter);
 function Goal(settings){
   this.name = settings.name;
 }
-},{"events":18,"inherits":19}],20:[function(require,module,exports){
+},{"events":20,"inherits":17}],18:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var aabb = require('aabb-2d');
@@ -1985,7 +2061,7 @@ Entity.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
 
-},{"events":18,"aabb-2d":23,"inherits":19}],23:[function(require,module,exports){
+},{"events":20,"aabb-2d":23,"inherits":17}],23:[function(require,module,exports){
 module.exports = AABB
 
 var vec2 = require('gl-matrix').vec2
