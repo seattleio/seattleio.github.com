@@ -24,12 +24,68 @@
 
   <script src="{{ site.baseurl }}/bower_components/html5shiv/dist/html5shiv.js"></script>
 </head>
-<body>
+<body class="{% if page.front == true %}front{% endif %}">
 
 <header>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="{{ site.baseurl }}/" class="navbar-brand">{{ site.title }}</a>
+
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav navbar-inverse pull-right">
+          <li><a href="http://seattleio.tumblr.com" id="interwebs-tumblr" target="_blank">tumblr</a></li>
+          <li><a href="http://twitter.com/seattleio" id="interwebs-twitter" target="_blank">@seattleio</a></li>
+          <li><a href="http://eepurl.com/Da5HH" id="interwebs-mailchimp" target="_blank">newsletter</a></li>
+          <!--
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        -->
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div>
+  </nav>
   <div class="container">
-    <div class="col-lg-12">
-      <h1 id="site-title"><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+      
+    <div class="header-message">
+      {% if page.front == true %}
+        <h3>Read books about the people & culture of Seattle, WA & support local businesses.</h3>
+        <h4>Book #1: interviews with local indie game developers!</h4>
+        <!-- Begin MailChimp Signup Form -->
+        <div id="mc_embed_signup">
+        <form action="http://superbigtree.us5.list-manage1.com/subscribe/post?u=b5b4f7fda673e887e9380b619&amp;id=0884c4f1e3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          
+        <div class="mc-field-group">
+          <h5>Sign up to learn more:</h5>
+
+          <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="email">
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button btn">
+          <p><small>We'll never sell or share your information.</small></p>
+          <div id="mce-responses" class="clear">
+            <div class="response" id="mce-error-response" style="display:none"></div>
+            <div class="response" id="mce-success-response" style="display:none"></div>
+          </div>
+          </div>
+        </form>
+        </div>
+        <!--End mc_embed_signup-->
+      {% endif %}
     </div>
   </div>
 </header>
@@ -58,7 +114,8 @@
 <script id="post">
 </script>
 
-<!-- <script src="{{ site.baseurl }}/bower_components/jquery/jquery.min.js"></script> -->
+<script src="{{ site.baseurl }}/bower_components/jquery/jquery.min.js"></script>
+<script src="{{ site.baseurl }}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- <script src="{{ site.baseurl }}/bower_components/moment/min/moment.min.js"></script> -->
 <!-- <script src="{{ site.baseurl }}/app.js"></script> -->
 {% include custom_js.html %}

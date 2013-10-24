@@ -3,6 +3,10 @@
   font-weight: 300;
 }
 
+body {
+  padding-top: 50px;
+}
+
 a {
 
 }
@@ -32,34 +36,115 @@ small {
 }
 
 header {
-  background-color: #fff;
-  border-bottom: 1px solid #ededed;
-  -webkit-box-shadow: inset 0px -1px 5px -1px rgba(200, 200, 200, 0.4);
-  box-shadow: inset 0px -1px 5px -1px rgba(200, 200, 200, 0.4);
+  width: 100%;
+  position: absolute;
+  color: #fff;
+  font-weight: 100;
 }
 
-h1#site-title {
+header nav.navbar-inverse {
+  background-color: #212120;
+  border-color: #000000;
+  -webkit-box-shadow: inset 0px -5px 25px 0px rgba(11, 11, 11, 0.1),
+                      0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0px -5px 25px 0px rgba(11, 11, 11, 0.1),
+              0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+}
+
+header nav.navbar-inverse ul.dropdown-menu {
+  color: #fff;
+  background-color: #080808;
+}
+
+header nav.navbar-inverse ul.dropdown-menu>li>a {
+  color: #efefef;
+  font-weight: 300;
+  padding: 8px 20px;
+}
+
+header nav.navbar-inverse ul.dropdown-menu>li>a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+header #mc_embed_signup {
+  display: none;
+  margin-top: 20px;
+}
+
+header h3 {
   font-weight: 100;
+  letter-spacing: 1px;
   font-size: 1.8em;
-  text-align: center;
-  margin: 35px 0px 30px 0px;
+}
+
+header h3 {
+  font-size: 1em;
+}
+
+header h4 {
+  font-size: 0.9em;
+}
+
+@media (min-width: 400px){
+  header h3 {
+    font-size: 1.2em;
+  }
+
+  header h4 {
+    font-size: 1.1em;
+  }
+}
+
+@media (min-width: 450px){
+  .header-message {
+    width: 55%;
+  }
+}
+
+@media (min-width: 600px){
+  header #mc_embed_signup {
+    display: block;
+  }
+}
+
+@media (min-width: 700px){
+  header h3 {
+    font-size: 1.3em;
+  }
+
+  header h4 {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 900px){
+  header h3 {
+    font-size: 1.5em;
+    margin-top: 50px;
+  }
+  header h4 {
+    font-size: 1.2em;
+  }
+}
+
+@media (min-width: 1100px){
+  header h3 {
+    font-size: 1.6em;
+    margin-top: 75px;
+  }
+  header h4 {
+    font-size: 1.3em;
+  }
 }
 
 
 .banner {
-  width: 100%;
-  height: 320px;
-  /*
-  background-image: url('img/photo.jpg');
-  background-size: 120%;
+  background-image: url('img/skyline.jpg');
+  background-size: 100%;
   background-repeat: no-repeat;
   width: 100%;
-  height: 10%;
-  padding-top: 5%;
-  padding-left: 1%;
-  padding-right: 1%;
-  padding-bottom: 5%;
-  */
+  padding-bottom: 49%;
   -webkit-box-shadow: 0px 1px 5px 0px rgba(200, 200, 200, 0.8);
   box-shadow: 0px 1px 5px 0px rgba(200, 200, 200, 0.8);
 }
@@ -179,6 +264,7 @@ h2#game-title {
 
 input.email {
   border: 1px solid #ccc;
+  border-radius: 2px;
   display: inline-block;
   outline: none;
   width: 150px;
