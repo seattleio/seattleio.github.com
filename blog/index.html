@@ -1,0 +1,22 @@
+---
+title: Blog
+layout: page
+sidebar: true
+---
+
+<section id="books-page">
+  <h1>Recent Posts.</h1>
+  <div class="posts">
+    {% for post in site.posts %}
+      {% if post.published %}
+        <div class="post">
+          <a href="{{ post.url }}" class="{{ post.slug }}">
+            <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
+            <h3 class="post-title">{{ post.title }}</h3>
+          </a>
+          <div class="post-content">{{ post.excerpt | strip_html | truncate: 400 }}</div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

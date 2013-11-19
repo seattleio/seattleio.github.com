@@ -1,13 +1,6 @@
 var postsEl = $('#tumblr');
 
-//get('info', blogInfo);
-
-get('posts', postsIndex);
-
-
-function blogInfo(data){
-  console.log(data.response.blog)
-}
+getTumblr('posts', postsIndex);
 
 function postsIndex(data){
   var posts = data.response.posts;
@@ -37,7 +30,7 @@ function postsIndex(data){
   }
 }
 
-function get(resource, callback){
+function getTumblr(resource, callback){
   $.ajax({
     type: 'get',
     url: 'http://api.tumblr.com/v2/blog/seattleio.tumblr.com/' + resource,
