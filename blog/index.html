@@ -14,7 +14,7 @@ sidebar: true
             <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
             <h3 class="post-title">{{ post.title }}</h3>
           </a>
-          <div class="post-content">{{ post.excerpt | strip_html | truncate: 400 }}</div>
+          <div class="post-content">{{ post.excerpt | truncate: 400 }}</div>
         </div>
       {% endif %}
     {% endfor %}
