@@ -478,7 +478,7 @@ ul#like li {
   margin-bottom: 20px;
 }
 
-#post img {
+.post-content img {
   max-width: 100%;
   height: auto;
 }
