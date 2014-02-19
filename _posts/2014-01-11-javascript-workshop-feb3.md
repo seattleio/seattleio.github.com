@@ -7,8 +7,6 @@ published: true
 author: Seth Vincent
 ---
 
-[![js workshop](/img/events/js-workshop-feb3-signup.jpg)](http://www.meetup.com/seattle-io/events/155670922/)
-
 Join us on February 3 for a JavaScript workshop that will act as an introduction to the language and to creating interactive graphics using the canvas tag.
 
 <p><a href="http://www.meetup.com/seattle-io/events/155670922/" class="btn button" target="_blank">Sign up for the workshop</a></p>
