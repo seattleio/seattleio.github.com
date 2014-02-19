@@ -1,61 +1,53 @@
 ---
-title: seattle.io – community, media, & technology | Seattle, WA 
+title: seattle.io – community, media, & technology
 layout: default
-front: true
+slug: front
 ---
 
-<div class="banner"></div>
+<div class="container">
+
+  <div class="book">
+    <div class="book-cover">
+      <img src="{{ baseurl }}/img/books/play-local-cover-small.jpg" class="book-cover-small">
+    </div>
+
+    <div class="book-info">
+      <h1 class="book-title"><b>Play Local:</b> Explore Seattle's locally-made video games.</h1>
+      <div class="book-description">Interviews with local video game makers, stories about what it's like to make games in Seattle, how-to guides for getting started making games, and a comprehensive directory to all things related to video games in Seattle.</div>
+    </div>
+
+    <div class="book-learn-more">
+      <a class="button" href="{{baseurl}}/play-local">Learn more about <i>Play Local</i></a>
+    </div>
+  </div>
+</div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12 description">
-      <p>seattle.io produces books about local topics.</p> 
-      <p>Book #1 is all about <b>Seattle indie video game developers!</b></p>
-      <div class="col-lg-7" style="margin:0px auto; float: none;">
-        <p class="message">The book will include interviews with local indie game developers, how-to guides for getting started as an indie game developer, and a comprehensive directory to all the indie video game things in the Seattle area. We'll also offer the book bundled with some of the games made by local indie developers!</p>
-      </div>
+  <section id="recent-posts">
+    <h1>Recent posts:</h1>
+    <div class="posts">
+      {% for post in site.posts limit:5 %}
+        {% if post.published %}
+          <div class="post">
+            <p class="post-date">{{ post.date | date: "%d %B %Y" }} ~ {{ post.author }}</p>
+            <a href="{{ post.url }}" class="{{ post.slug }}">
+              <h3 class="post-title">{{ post.title }}</h3>
+            </a>
+            <div class="post-content">{{ post.excerpt | truncate: 400 }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
+    <a class="btn" href="{{ baseurl }}/blog">More posts</a>
+  </section>
+</div>
 
-    <div id="newsletter" class="col-lg-12 newsletter">
-
-      <!-- Begin MailChimp Signup Form -->
-      <div id="mc_embed_signup">
-      <form action="http://superbigtree.us5.list-manage1.com/subscribe/post?u=b5b4f7fda673e887e9380b619&amp;id=0884c4f1e3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-        
-      <div class="mc-field-group">
-        <h2>Sign up to learn more &<br> stay up to date with new releases:</h2>
-
-        <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="email">
-        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button btn">
-        <p><small>We'll never sell your info, and emails from us will only be occasional.</small></p>
-        <div id="mce-responses" class="clear">
-          <div class="response" id="mce-error-response" style="display:none"></div>
-          <div class="response" id="mce-success-response" style="display:none"></div>
-        </div>
-        </div>
-      </form>
-      </div>
-      <!--End mc_embed_signup-->
-
-    </div>
-
-    <div class="row">
-      <section id="pre-order" class="col-lg-12">
-        <h1>Pre-order our book about Seattle indie game developers!</h1>
-        <p class="lead center">Soon you'll be able to pre-order the book. You'll get early-release chapters and bonus content!<br> 
-        <a href="http://eepurl.com/Da5HH" target="_blank"><b>Sign up for our newsletter</b></a> to be the first to find out when pre-ordering is available.</p>
-      </section>
-      <section id="interwebs" class="col-lg-12">
+      <section id="interwebs">
         <h5>FIND US ON THE INTERWEBS:</h5>
-        <ul id="find">
-          <li><a class="btn" href="http://seattleio.tumblr.com" id="interwebs-tumblr" target="_blank">tumblr blog</a></li>
-          <li><a class="btn" href="http://twitter.com/seattleio" id="interwebs-twitter" target="_blank">twitter</a></li>
-          <li><a class="btn" href="http://eepurl.com/Da5HH" id="interwebs-mailchimp" target="_blank">newsletter</a></li>
-        </ul>
         <ul id="like">
           <li id="like-twitter">
             <a href="https://twitter.com/share" class="twitter-share-button" data-text="Wooooooo, a book about indie game devs in Seattle! http://seattle.io" data-via="seattleio">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
           </li>
           <li id="like-facebook">
             <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fseattle.io&amp;width=100&amp;height=21&amp;colorscheme=light&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;send=false&amp;appId=519892634715793" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
@@ -77,58 +69,10 @@ front: true
         <ul id="follow">
           <li id="follow-twitter">
             <a href="https://twitter.com/seattleio" class="twitter-follow-button" data-show-count="false">Follow @seattleio</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
           </li>
           <li id="follow-tumblr" style="margin-top:2px;">
             <iframe frameborder="0" border="0" scrolling="no" allowtransparency="true" height="25" width="115" src="http://platform.tumblr.com/v1/follow_button.html?button_type=2&tumblelog=seattleio&color_scheme=light"></iframe>
           </li>
         </ul>
       </section>
-    </div>
-
-    <div class="row">
-      <section id="recent-posts" class="col-lg-8">
-        <h1>Recent posts:</h1>
-        <div class="posts">
-          {% for post in site.posts %}
-            {% if post.published %}
-              <a href="{{ post.url }}" class="{{ post.slug }}">
-                <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
-                <h3 class="post-title">{{ post.title }}</h3>
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
-        <a class="btn readmore" href="http://seattleio.tumblr.com" target="_blank">there's more on our tumblr blog.</a>
-      </section>
-      <div class="col-lg-4 sidebar">
-        <h5>seattle.io around the interwebs</h5>
-        <p>Find us on <a href="http://twitter.com/seattleio" target="_blank">twitter</a> and <a href="http://seattleio.tumblr.com" target="_blank">tumblr</a>.</p>
-        <p><a href="{{ site.baseurl }}#mc_embed_signup">Sign up for our email newsletter</a> to get regular updates about the release of the local indie games book and upcoming books.</p>
-
-        <p>Contact us at <a href="mailto:hi@seattle.io">hi@seattle.io</a>.</p>
-
-        <h5>About seattle.io:</h5>
-        <p>The goal: research local topics in Seattle, WA, and compile what we learn into a digital book.</p>
-        <p>Each book will include interviews with local folks about what they do, why they do it, and how they do it. In addition, each book will include how-to guides for getting involved with that topic, and a comprehensive directory for learning more about the topic.</p>
-        <p>We also bundle each book with related items. For instance, with the book about local indie game developers we'll bundle the book with games from some of those developers.</p>
-        <h5>Possible upcoming topics:</h5>
-        <ul>
-          <li>Guide to Civics</li>
-          <li>Theater of Seattle</li>
-          <li>Seattle street food</li>
-          <li><a href="mailto:hi@seattle.io">Suggest other topics we should cover.</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!--
-    TODO:
-    <section id="about" class="col-lg-8">
-      <h1>About seattle.io:</h1>
-    </section>
-    -->
-
-    
-  </div>
-</div>

@@ -16,20 +16,15 @@
   <meta name="description" content="{% if page.description || post.description %}{{ page.description }}{{ post.description }}{% else %}{{ site.description }}{% endif %}">
   <meta name="viewport" content="width=device-width">
 
-  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link href="{{ site.baseurl }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic|Open+Sans:400,300,800' rel='stylesheet' type='text/css'>
   <link href="{{ site.baseurl }}/style.css" rel="stylesheet" />
-
-  {% include custom_css.html %}
-
-  <script src="{{ site.baseurl }}/bower_components/html5shiv/dist/html5shiv.js"></script>
 </head>
-<body class="{% if page.front == true %}front{% endif %}">
+<body class="{{page.slug}}">
 
 <header>
   {% include header-nav.html %}
   
-  {% if page.front == true %}
+  {% if page == 'front' %}
     {% include header-message.html %}
   {% endif %}
 </header>
@@ -59,14 +54,6 @@
   </div>
 </footer>
 
-<script id="post">
-</script>
-
-<script src="{{ site.baseurl }}/bower_components/jquery/jquery.min.js"></script>
-<script src="{{ site.baseurl }}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- <script src="{{ site.baseurl }}/bower_components/moment/min/moment.min.js"></script> -->
-<!-- <script src="{{ site.baseurl }}/app.js"></script> -->
-{% include custom_js.html %}
 {% include google_analytics.html %}
 </body>
 </html>

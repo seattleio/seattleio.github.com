@@ -1,36 +1,11 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <a href="{{ site.baseurl }}/" class="navbar-brand">{{ site.title }}</a>
+<nav id="header-nav">
+  <h1 class="site-title"><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
 
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-
-      <div class="collapse navbar-collapse navbar-ex1-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="{{ site.baseurl }}/blog" id="blog">blog</a></li>
-          <li><a href="{{ site.baseurl }}/books" id="books">books</a></li>
-          <li><a href="{{ site.baseurl }}/events" id="events">events</a></li>
-          <li><a href="{{ site.baseurl }}/about" id="about">about</a></li>
-          <li><a href="{{ site.baseurl }}/newsletter" id="newsletter">newsletter</a></li>
-          <!--
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
-        -->
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div>
-  </nav>
+  <ul class="nav">
+    <li><a href="{{ site.baseurl }}/blog" id="blog">blog</a></li>
+    <li><a href="{{ site.baseurl }}/books" id="books">books</a></li>
+    <li><a href="{{ site.baseurl }}/events" id="events">events</a></li>
+    <li><a href="{{ site.baseurl }}/about" id="about">about</a></li>
+    <li><a href="{{ site.baseurl }}/newsletter" id="newsletter">newsletter</a></li>
+  </ul>
+</nav>

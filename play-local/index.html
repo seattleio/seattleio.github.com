@@ -1,0 +1,58 @@
+---
+title: 'Play Local: Exploring games made in Seattle'
+layout: page
+sidebar: true
+---
+<section id="books-page">
+  <h1>Play Local: exploring games made in Seattle.</h1>
+  <div class="book">
+    <div class="book-cover">
+      <img src="{{ baseurl }}/img/books/play-local-cover-small.jpg" class="book-cover-small">
+    </div>
+
+    <div class="book-info">
+      <div class="book-description"> <p>The book will include interviews with local indie game developers, how-to guides for getting started as an indie game developer, and a comprehensive directory to all the indie video game things in the Seattle area. We'll also offer the book bundled with some of the games made by local indie developers!</p>
+
+  <p>Do you live in Seattle and make video games? We should interview you! Send us an email at <b>hi@seattle.io</b></p></div>
+
+  </div>
+
+
+
+  <!-- Begin MailChimp Signup Form -->
+  <div id="mc_embed_signup">
+  <form action="http://superbigtree.us5.list-manage1.com/subscribe/post?u=b5b4f7fda673e887e9380b619&amp;id=0884c4f1e3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+    
+  <div class="mc-field-group">
+    <h3>Be the first to find out when the book is released:</h3>
+
+    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="email">
+    <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button btn">
+    <div id="mce-responses" class="clear">
+      <div class="response" id="mce-error-response" style="display:none"></div>
+      <div class="response" id="mce-success-response" style="display:none"></div>
+    </div>
+    </div>
+  </form>
+  </div>
+  <!--End mc_embed_signup-->
+</section>
+
+<div class="container">
+  <section id="blog-page">
+    <h1>Recent posts related to Play Local.</h1>
+    <div class="posts">
+      {% for post in site.posts %}
+        {% if post.published and post.book == 'play-local' %}
+          <div class="post">
+            <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
+            <a href="{{ post.url }}" class="{{ post.slug }}">
+              <h3 class="post-title">{{ post.title }}</h3>
+            </a>
+            <div class="post-content">{{ post.excerpt | truncate: 400 }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+</div>

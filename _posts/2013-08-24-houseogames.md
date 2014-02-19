@@ -5,6 +5,7 @@ layout: article
 sidebar: true
 published: true
 author: Seth Vincent
+book: play-local
 ---
 
 [HouseOgames](http://houseogames.com) is an incubator for game development companies, and kind of a weird one.
