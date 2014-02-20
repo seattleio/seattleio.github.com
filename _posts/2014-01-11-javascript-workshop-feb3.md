@@ -5,6 +5,7 @@ layout: article
 sidebar: true
 published: true
 author: Seth Vincent
+event: true
 ---
 
 Join us on February 3 for a JavaScript workshop that will act as an introduction to the language and to creating interactive graphics using the canvas tag.

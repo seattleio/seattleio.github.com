@@ -7,6 +7,26 @@ sidebar: true
   <h1>Events & Workshops.</h1>
   
   <p>seattle.io hosts a number of workshops and other events focused on the intersection of journalism, storytelling, and technology. Keep updated on events by <a href="{{ baseurl }}/newsletter">subscribing to our newsletter</a> and by <a href="http://www.meetup.com/seattle-io/" target="_blank">joining our group on meetup.com</a>.</p>
+
+  <div class="container">
+  <section id="blog-page">
+    <h1>Upcoming events.</h1>
+    <div class="posts">
+      {% for post in site.posts %}
+        {% if post.published and post.event %}
+          <div class="post">
+            <p class="post-date">{{ post.date | date: "%d %B %Y" }}</p>
+            <a href="{{ post.url }}" class="{{ post.slug }}">
+              <h3 class="post-title">{{ post.title }}</h3>
+            </a>
+            <div class="post-content">{{ post.excerpt | truncate: 400 }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
   <br>
   <div class="group">
     <div class="group-item">
