@@ -149,6 +149,7 @@ input.email {
 
 .btn, 
 .button {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
   background-color: #F34A53;
   color: #fefefa;
   border-radius: 2px;
