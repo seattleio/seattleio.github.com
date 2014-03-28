@@ -128,27 +128,35 @@ header ul.nav a:focus {
   color: #000;
 }
 
-input.email {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
   border: 1px solid #ccc;
   border-radius: 2px;
   display: inline-block;
   outline: none;
   width: 150px;
-  padding: 0px 10px;
+  padding: 8px 10px 6px;
   vertical-align: top;
   margin-bottom: 15px;
+  margin-right: 5px;
   font-weight: 300;
-  line-height: 2.3;
+  height: 45px;
 }
 
 @media only screen and (min-width: 510px){
-  input.email {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
     width: 250px;
   }
 }
 
-.btn, 
-.button {
+button,
+.button,
+input[type="submit"] {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
   background-color: #F34A53;
   color: #fefefa;
@@ -156,39 +164,25 @@ input.email {
   border: 1px solid #F34A53;
   font-weight: 400;
   cursor: pointer;
-  line-height: 2.9;
   font-size: 14px;
   padding: 0px 10px;
+  height: 45px;
+  line-height: 45px;
 }
 
-a.btn, 
 a.button {
   padding: 11px 10px 10px 10px;
 }
 
-.btn:hover,
+button:hover,
+button:focus,
 .button:hover,
-.btn:focus,
-.button:focus {
+.button:focus,
+input[type="submit"]:hover,
+input[type="submit"]:focus {
   background-color: #F01924;
   border-color: #F01924;
   color: #fff;
-}
-
-.btn.yellow, 
-.button.yellow {
-  background-color: #FAE3B4;
-  border-color: #FAE3B4;
-  color: #1E4147;
-}
-
-.btn.yellow:hover,
-.button.yellow:hover,
-.btn.yellow:focus,
-.button.yellow:focus {
-  background-color: #FAD899;
-  border-color: #FAD899;
-  color: #000;
 }
 
 section h1 {
