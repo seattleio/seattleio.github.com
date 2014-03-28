@@ -17,6 +17,6 @@ What makes Seattle a good place to make games? Why do you make games? We'd like 
 
 Introduce yourself by answering a few questions here: 
 
-<a href="#" target="_blank" class="button">Interview about you & your games!</a>
+<a href="https://docs.google.com/forms/d/1GIUapqhb5vd1LsqHj_6a7-TQqGE5xHmm0foEjnkI0MY/viewform" target="_blank" class="button">Interview about you & your games!</a>
 
 We'll use your answers for a blog post about you/your game with your permission.
