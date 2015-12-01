@@ -1,0 +1,14 @@
+.site-footer {
+  border-top: 1px solid #ccc;
+  background-color: var(--light-grey);
+  padding: 20px 0px;
+}
+
+.site-footer a.site-logo {
+  color: #333;
+}
+
+.site-footer h1.site-title {
+  font-size: 15px;
+  text-align: center;
+}

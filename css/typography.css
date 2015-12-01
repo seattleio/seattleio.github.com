@@ -1,0 +1,24 @@
+body {}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+.site-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--sans-serif);
+}
+
+.center {
+  text-align: center;
+}

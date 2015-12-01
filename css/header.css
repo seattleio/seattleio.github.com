@@ -1,0 +1,15 @@
+.site-header {
+  background-color: var(--dark-background);
+  padding-top: 3px;
+}
+
+.site-header a {
+  color: #fff;
+}
+
+.site-header .site-title {
+  font-size: 20px;
+  text-align: center;
+  color: #fff;
+  margin: 20px 0px 19px 0px;
+}

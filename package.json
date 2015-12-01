@@ -1,0 +1,33 @@
+{
+  "name": "seattleio.github.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bundle-css": "sheetify -u sheetify-cssnext css/index.css > public/bundle.css",
+    "watch-css": "chokidar --initial 'css/*.css' -c 'npm run bundle-css && jekyll build'",
+    "watch": "npm run watch-css",
+    "start": "npm run watch & jekyll serve -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seattleio/seattleio.github.com.git"
+  },
+  "author": "sethvincent <sethvincent@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seattleio/seattleio.github.com/issues"
+  },
+  "homepage": "https://github.com/seattleio/seattleio.github.com#readme",
+  "devDependencies": {
+    "chokidar-cli": "^1.1.1",
+    "sheetify": "^3.1.0",
+    "sheetify-cssnext": "^1.0.0"
+  },
+  "dependencies": {
+    "basscss": "^7.0.4",
+    "basscss-grid": "^1.0.3",
+    "csskit": "^1.1.1",
+    "normalize.css": "^3.0.3"
+  }
+}

@@ -1,78 +1,37 @@
 ---
-title: seattle.io – community, media, & technology
-layout: default
-slug: front
 ---
 
-<div class="container">
+<h2 class="site-description">Data, tools, & resources for building Seattle-focused applications.</h2>
 
-  <div class="book">
-    <div class="book-cover">
-      <img src="{{ baseurl }}/img/books/play-local-cover-small.jpg" class="book-cover-small">
-    </div>
+<p class="center">seattle.io has a new focus for 2016. Find out when big things happen:</p>
+{% include newsletter.html %}
 
-    <div class="book-info">
-      <h1 class="book-title"><b>Play Local:</b> Explore Seattle's locally-made video games.</h1>
-      <div class="book-description">Interviews with local video game makers, stories about what it's like to make games in Seattle, how-to guides for getting started making games, and a comprehensive directory to all things related to video games in Seattle.</div>
-    </div>
+<div class="feature-list container">
+  <div class="feature col col-12 md-col-6">
+    <a href="{{site.baseurl}}/data">
+      <h3>Collaborative data</h3>
+      <p>Our data isn't just open. You can fork the data, improve it, & have your changes merged with the original dataset.</p>
+    </a>
+  </div>
 
-    <div class="book-learn-more">
-      <a class="button" href="{{baseurl}}/play-local">Learn more about <i>Play Local</i></a>
-    </div>
+  <div class="feature col col-12 md-col-6">
+    <a href="{{site.baseurl}}/api">
+      <h3>API services</h3>
+      <p>Need geocoding for your application? Or info about the geographical boundaries in Seattle? Use our API services to build your application.</p>
+    </a>
+  </div>
+
+  <div class="feature col col-12 md-col-6">
+    <a href="{{site.baseurl}}/tools">
+      <h3>UI tools</h3>
+      <p>We have a number of tools with friendly interfaces for editing data, creating visualizations & graphics, and aggregating & analyzing local information.</p>
+    </a>
+  </div>
+
+  <div class="feature col col-12 md-col-6">
+    <a href="{{site.baseurl}}/docs">
+      <h3>Documentation</h3>
+      <p>All of these tools & services have documentation. We're also documenting local policy & governance, and resources useful to developers & community organizers.</p>
+    </a>
   </div>
 </div>
-
-<div class="container">
-  <section id="recent-posts">
-    <h1>Recent posts:</h1>
-    <div class="posts">
-      {% for post in site.posts limit:5 %}
-        {% if post.published %}
-          <div class="post">
-            <p class="post-date">{{ post.date | date: "%d %B %Y" }} ~ {{ post.author }}</p>
-            <a href="{{ post.url }}" class="{{ post.slug }}">
-              <h3 class="post-title">{{ post.title }}</h3>
-            </a>
-            <div class="post-content">{{ post.excerpt | truncate: 400 }}</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <a class="btn" href="{{ baseurl }}/blog">More posts</a>
-  </section>
-</div>
-
-      <section id="interwebs">
-        <h5>FIND US ON THE INTERWEBS:</h5>
-        <ul id="like">
-          <li id="like-twitter">
-            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Wooooooo, a book about indie game devs in Seattle! http://seattle.io" data-via="seattleio">Tweet</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-          </li>
-          <li id="like-facebook">
-            <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fseattle.io&amp;width=100&amp;height=21&amp;colorscheme=light&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;send=false&amp;appId=519892634715793" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-          </li>
-          <li id="like-google">
-            <!-- Place this tag where you want the +1 button to render. -->
-            <div class="g-plusone" data-annotation="inline" data-width="120"></div>
-
-            <!-- Place this tag after the last +1 button tag. -->
-            <script type="text/javascript">
-              (function() {
-                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                po.src = 'https://apis.google.com/js/plusone.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-              })();
-            </script>
-          </li>
-        </ul>
-        <ul id="follow">
-          <li id="follow-twitter">
-            <a href="https://twitter.com/seattleio" class="twitter-follow-button" data-show-count="false">Follow @seattleio</a>
-              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-          </li>
-          <li id="follow-tumblr" style="margin-top:2px;">
-            <iframe frameborder="0" border="0" scrolling="no" allowtransparency="true" height="25" width="115" src="http://platform.tumblr.com/v1/follow_button.html?button_type=2&tumblelog=seattleio&color_scheme=light"></iframe>
-          </li>
-        </ul>
-      </section>
